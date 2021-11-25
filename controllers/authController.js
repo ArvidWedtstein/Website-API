@@ -108,7 +108,7 @@ exports.postLogin = async (req, res, next) => {
       error.statusCode = 401;
       throw error;
     }
-    if (user.banned) {
+    if (user.banned == true) {
       const error = new Error("user is banned!");
       error.message = "User is banned!";
       error.statusCode = 418;
