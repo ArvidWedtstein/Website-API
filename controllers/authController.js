@@ -115,7 +115,7 @@ exports.postLogin = async (req, res, next) => {
       throw error;
     }
     console.log(loadedUser)
-    if (loadedUser) {
+    if (email == loadedUser.email) {
       const error = new Error("user is already logged in");
       error.statusCode = 417;
       throw error;
