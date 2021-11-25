@@ -130,7 +130,7 @@ exports.postLogin = async (req, res, next) => {
       
     }
     console.log('login')
-    const token = jwt.sign({ email: loadedUser.email, id: loadedUser._id }, "expressnuxtsecret", {
+    const token = jwt.sign({ email: loadedUser.email }, "expressnuxtsecret", {
       expiresIn: "20m",
     });
     res.status(200).json({ token: token, message: "Successfully logged in" });
