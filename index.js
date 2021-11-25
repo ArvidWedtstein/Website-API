@@ -16,7 +16,7 @@ const newsRouter = require("./routes/newsRouter");
 const app = express();
 app.use(bodyParser.json());
 app.use('/uploads', express.static('uploads'));
-/* https://github.com/mohammadali0120/nuxt-express-mongodb-authentication/blob/main/frontend/components/User/index.vue*/
+
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(

@@ -114,9 +114,14 @@ exports.postLogin = async (req, res, next) => {
       error.statusCode = 418;
       throw error;
     }
+    
     loadedUser = user;
     const comparePassword = await bcrypt.compare(password, user.password);
-
+    if (loadedUser) {
+      const error = new Error("user is already logged in");
+      error.statusCode = 401;
+      throw error;
+    }
     if (!comparePassword) {
       const error = new Error("password does not match!");
       error.statusCode = 401;
