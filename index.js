@@ -8,7 +8,6 @@ const path = require('path');
 const fs = require('fs')
 
 require('dotenv').config();
-const port = process.env.PORT || 3000;
 // routes
 const authRouter = require("./routes/authRouter");
 const projectRouter = require("./routes/projectRouter");
