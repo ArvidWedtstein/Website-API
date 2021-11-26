@@ -172,6 +172,7 @@ exports.postUpdateUser = async (req, res, next) => {
     next(err);
   }
 };
+//^[a-zA-Z0-9]+$
 exports.changePassword = async (req, res, next) => {
   const { email, password, repPassword } = req.body;
   try {
