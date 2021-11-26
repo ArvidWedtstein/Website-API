@@ -23,7 +23,7 @@ const printSchema = new Schema(
       required: false,
     },
     stl: {
-      type: Object,
+      type: String,
       required: true
     }
   },
