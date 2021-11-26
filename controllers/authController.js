@@ -40,7 +40,7 @@ const Peasant = new Role('Peasant', rankicons["Peasant"], [perm.VIEW_POST, perm.
 const Tradesman = new Role('Tradesman', rankicons["Tradesman"], [perm.VIEW_POST, perm.VIEW_PROJECTS])
 const Knight = new Role('Knight', rankicons["Knight"], [perm.VIEW_POST, perm.VIEW_PROJECTS])
 const Nobles = new Role('Nobles', rankicons["Nobles"], [perm.VIEW_POST, perm.CREATE_POST, perm.VIEW_PROJECTS])
-const Preast = new Role('Preast', rankicons["Preast"], [perm.VIEW_POST, perm.CREATE_POST, perm.MODIFY_POST, perm.VIEW_PROJECTS])
+const Preast = new Role('Preast', rankicons["Preast"], [perm.VIEW_POST, perm.CREATE_POST, perm.MODIFY_POST, perm.VIEW_PROJECTS, perm.KICK_USER])
 const Admin = new Role('Admin', rankicons["Admin"], [perm.VIEW_POST, perm.CREATE_POST, perm.DELETE_POST, perm.MODIFY_POST, perm.MODIFY_USERS, perm.VIEW_PROJECTS, perm.CAN_CONTACT, perm.KICK_USER])
 const roles = {
   "Peasant": Peasant,
@@ -173,7 +173,7 @@ exports.postUpdateUser = async (req, res, next) => {
   }
 };
 exports.changePassword = async (req, res, next) => {
-  const { password, repPassword } = req.body;
+  const { email, password, repPassword } = req.body;
   try {
     if (password != repPassword) {
       const error = new Error("passwords don't match!");
@@ -193,7 +193,7 @@ exports.changePassword = async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(password, 12);
     const user = await userModel.findOneAndUpdate(
       {
-        email: loadedUser.email
+        email: email
       },
       {
         password: hashedPassword
