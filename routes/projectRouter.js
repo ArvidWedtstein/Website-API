@@ -34,6 +34,5 @@ router.post("/newProject", upload.single("thumbnail"), projectController.newProj
 router.get("/getProjects", projectController.getProjects);
 
 // 3D Print \\
-router.post("/newPrint", upload2.single("stl"), projectController.newPrint);
 router.get("/getPrints", projectController.getPrints);
 module.exports = router;
