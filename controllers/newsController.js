@@ -43,6 +43,14 @@ exports.getnewsposts = async (req, res, next) => {
     posts: posts
   });
 }
+exports.getnewspost = async (req, res, next) => {
+  const { id } = req.params;
+  const posts = await newspostModel.find({ _id: id });
+  //console.log(posts)
+  res.status(200).json({
+    posts: posts
+  });
+}
 
 exports.deletenewsposts = async (req, res, next) => {
   const { id } = req.body
