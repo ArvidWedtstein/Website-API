@@ -78,11 +78,11 @@ exports.postSignin = async (req, res, next) => {
       throw error;
     }
 
-    const hashedPassword = await bcrypt.hash(password, 12);
+    //const hashedPassword = await bcrypt.hash(password, 12);
     const user = new userModel({
       name: name,
       email: email,
-      password: hashedPassword,
+      password: password,
       role: Peasant
     });
     const result = await user.save();
@@ -287,7 +287,7 @@ exports.unbanUser = async (req, res, next) => {
 }
 /* Roles */
 exports.getRole = async (req, res, next) => {
-  const { role } = req.body;
+  const { role } = req.params;
   try {
     res.status(200).json({
       message: "Found role",

@@ -18,12 +18,12 @@ const upload = multer({
 router.post("/signin", authController.postSignin);
 router.post("/login", authController.postLogin);
 //router.delete("/logout", authController.postLogout);
-router.get("/getUser/:id", authController.getUser)
+router.get("/getUser/:id", authController.getUser);
 router.get("/allusers", authController.getAllUsers);
 router.post("/postUpdateuser", authController.postUpdateUser);
 router.post("/changePassword", authController.changePassword);
 router.post("/changeProfileimg", upload.single("profileimg"), authController.changeProfileimg);
-router.post("/getRole", authController.getRole);
+router.get("/getRole/:role", authController.getRole);
 router.get("/getRoles", authController.getRoles);
 router.post("/banUser", authController.banUser);
 router.post("/unbanUser", authController.unbanUser);
