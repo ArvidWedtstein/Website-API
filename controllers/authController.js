@@ -345,7 +345,29 @@ exports.postLogout = async (req, res, next) => {
 
 
 exports.getUser = (req, res, next) => {
-  if (loadedUser) {
+  const { id } = req.params;
+  try {
+    if (!id) {
+      const error = new Error("invalid uid");
+      error.statusCode = 404;
+      throw error;
+    }
+    const user = await userModel.find({ _id: id });
+    if (!user) {
+      const error = new Error("user not found");
+      error.statusCode = 404;
+      throw error;
+    }
+    res.status(200).json({
+      user
+    })
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+  /*if (loadedUser) {
     res.status(200).json({
       user: {
         id: loadedUser._id,
@@ -355,7 +377,7 @@ exports.getUser = (req, res, next) => {
         profileimg: loadedUser.profileimg
       },
     });
-  }
+  }*/
 };
 
 exports.getAllUsers = async (req, res, next) => {
