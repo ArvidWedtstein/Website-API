@@ -15,6 +15,7 @@ const perm = {
   MODIFY_USERS: "MODIFY_USERS",
   VIEW_POST: "VIEW_POST",
   VIEW_PROJECTS: "VIEW_PROJECTS",
+  CREATE_PROJECT: "CREATE_PROJECT",
   CAN_CONTACT: "CAN_CONTACT",
   KICK_USER: "KICK_USER"
 }
@@ -41,7 +42,7 @@ const Tradesman = new Role('Tradesman', rankicons["Tradesman"], [perm.VIEW_POST,
 const Knight = new Role('Knight', rankicons["Knight"], [perm.VIEW_POST, perm.VIEW_PROJECTS])
 const Nobles = new Role('Nobles', rankicons["Nobles"], [perm.VIEW_POST, perm.CREATE_POST, perm.VIEW_PROJECTS])
 const Preast = new Role('Preast', rankicons["Preast"], [perm.VIEW_POST, perm.CREATE_POST, perm.MODIFY_POST, perm.VIEW_PROJECTS, perm.KICK_USER])
-const Admin = new Role('Admin', rankicons["Admin"], [perm.VIEW_POST, perm.CREATE_POST, perm.DELETE_POST, perm.MODIFY_POST, perm.MODIFY_USERS, perm.VIEW_PROJECTS, perm.CAN_CONTACT, perm.KICK_USER])
+const Admin = new Role('Admin', rankicons["Admin"], [perm.VIEW_POST, perm.CREATE_POST, perm.DELETE_POST, perm.MODIFY_POST, perm.MODIFY_USERS, perm.VIEW_PROJECTS, perm.CAN_CONTACT, perm.KICK_USER, perm.CREATE_PROJECT])
 const roles = {
   "Peasant": Peasant,
   "Tradesman": Tradesman,
