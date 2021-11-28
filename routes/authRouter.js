@@ -23,7 +23,7 @@ router.get("/allusers", authController.getAllUsers);
 router.post("/postUpdateuser", authController.postUpdateUser);
 router.post("/changePassword", authController.changePassword);
 router.post("/changeProfileimg", upload.single("profileimg"), authController.changeProfileimg);
-router.get("/getRole/:role", authController.getRole);
+router.get("/getRole/:id", authController.getRole);
 router.get("/getRoles", authController.getRoles);
 router.post("/banUser", authController.banUser);
 router.post("/unbanUser", authController.unbanUser);
