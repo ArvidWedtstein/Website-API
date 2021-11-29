@@ -349,9 +349,22 @@ exports.getUser = async (req, res, next) => {
   const { id } = req.params;
   try {
     if (!id) {
-      const error = new Error("invalid uid");
-      error.statusCode = 404;
-      throw error;
+      
+      if (loadedUser) {
+        res.status(200).json({
+          user: {
+            id: loadedUser._id,
+            name: loadedUser.name,
+            email: loadedUser.email,
+            role: loadedUser.role,
+            profileimg: loadedUser.profileimg
+          },
+        });
+      } else {
+        const error = new Error("invalid uid");
+        error.statusCode = 404;
+        throw error;
+      }
     }
     const user = await userModel.find({ _id: id });
     if (!user) {
@@ -368,17 +381,6 @@ exports.getUser = async (req, res, next) => {
     }
     next(err);
   }
-  /*if (loadedUser) {
-    res.status(200).json({
-      user: {
-        id: loadedUser._id,
-        name: loadedUser.name,
-        email: loadedUser.email,
-        role: loadedUser.role,
-        profileimg: loadedUser.profileimg
-      },
-    });
-  }*/
 };
 
 exports.getAllUsers = async (req, res, next) => {
