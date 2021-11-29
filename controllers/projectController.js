@@ -44,15 +44,16 @@ exports.getProjects = async (req, res, next) => {
 
 exports.newRating = async (req, res, next) => {
   try {
-    const { author, rating } = req.body;
+    const { author, rating, review } = req.body;
     const project = new reviewModel({
       author,
-      rating
+      rating,
+      review
     });
     
     const result = await project.save();
     res.status(200).json({
-      message: "Project created"
+      message: "Review Created"
     });
   } catch (err) {
     if (!err.statusCode) {

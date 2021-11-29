@@ -6,11 +6,16 @@ const Schema = mongoose.Schema;
 const reviewSchema = new Schema(
   {
     author: {
-      type: Object,
-      required: true
+      type: String,
+      required: false,
+      default: "none"
     },
     rating: {
       type: Number,
+      required: true
+    },
+    review: {
+      type: String,
       required: true
     }
   },
