@@ -35,4 +35,8 @@ router.get("/getProjects", projectController.getProjects);
 
 // 3D Print \\
 router.get("/getPrints", projectController.getPrints);
+
+// Rating \\
+router.post("/newRating", projectController.newRating);
+router.get("/getRatings", projectController.getRatings);
 module.exports = router;

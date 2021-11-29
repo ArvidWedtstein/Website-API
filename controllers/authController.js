@@ -20,9 +20,10 @@ const perm = {
   KICK_USER: "KICK_USER"
 }
 class Role {
-  constructor(name, icon, permissions) {
+  constructor(name, icon, color, permissions) {
     this.name = name;
     this.icon = icon;
+    this.color = color;
     this.permissions = permissions;
   }
   get getpermissions() {
@@ -37,12 +38,12 @@ const rankicons = {
   "Preast": "fab fa-jenkins", 
   "Admin": "fab fa-wolf-pack-battalion"
 }
-const Peasant = new Role('Peasant', rankicons["Peasant"], [perm.VIEW_POST, perm.VIEW_PROJECTS])
-const Tradesman = new Role('Tradesman', rankicons["Tradesman"], [perm.VIEW_POST, perm.VIEW_PROJECTS])
-const Knight = new Role('Knight', rankicons["Knight"], [perm.VIEW_POST, perm.VIEW_PROJECTS])
-const Nobles = new Role('Nobles', rankicons["Nobles"], [perm.VIEW_POST, perm.CREATE_POST, perm.VIEW_PROJECTS])
-const Preast = new Role('Preast', rankicons["Preast"], [perm.VIEW_POST, perm.CREATE_POST, perm.MODIFY_POST, perm.VIEW_PROJECTS, perm.KICK_USER])
-const Admin = new Role('Admin', rankicons["Admin"], [perm.VIEW_POST, perm.CREATE_POST, perm.DELETE_POST, perm.MODIFY_POST, perm.MODIFY_USERS, perm.VIEW_PROJECTS, perm.CAN_CONTACT, perm.KICK_USER, perm.CREATE_PROJECT])
+const Peasant = new Role('Peasant', rankicons["Peasant"], "#42210C", [perm.VIEW_POST, perm.VIEW_PROJECTS])
+const Tradesman = new Role('Tradesman', rankicons["Tradesman"], "#279e00",[perm.VIEW_POST, perm.VIEW_PROJECTS])
+const Knight = new Role('Knight', rankicons["Knight"], "#727272", [perm.VIEW_POST, perm.VIEW_PROJECTS])
+const Nobles = new Role('Nobles', rankicons["Nobles"], "#6d0821", [perm.VIEW_POST, perm.CREATE_POST, perm.VIEW_PROJECTS])
+const Preast = new Role('Preast', rankicons["Preast"], "#87049b", [perm.VIEW_POST, perm.CREATE_POST, perm.MODIFY_POST, perm.VIEW_PROJECTS, perm.KICK_USER])
+const Admin = new Role('Admin', rankicons["Admin"], "#ff0000", [perm.VIEW_POST, perm.CREATE_POST, perm.DELETE_POST, perm.MODIFY_POST, perm.MODIFY_USERS, perm.VIEW_PROJECTS, perm.CAN_CONTACT, perm.KICK_USER, perm.CREATE_PROJECT])
 const roles = {
   "Peasant": Peasant,
   "Tradesman": Tradesman,
