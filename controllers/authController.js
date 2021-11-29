@@ -234,6 +234,38 @@ exports.changeProfileimg = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.changePerms = async (req, res, next) => {
+  const { id } = req.params;
+  const { permissions, pass } = req.body
+  try {
+    const user = await userModel.findOneAndUpdate(
+      {
+        _id: id,
+        password: pass
+      },
+      {
+        role: {
+          permissions: permissions
+        }
+      }
+    )
+    if (!user) {
+      const error = new Error("user not found!");
+      error.statusCode = 404;
+      throw error;
+    }
+    res.status(200).json({
+      message: "Changed permissions"
+    })
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};
+
 exports.banUser = async (req, res, next) => {
   console.log(req.body)
   try {
