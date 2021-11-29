@@ -345,7 +345,7 @@ exports.postLogout = async (req, res, next) => {
 };
 
 
-exports.getUser = (req, res, next) => {
+exports.getUser = async (req, res, next) => {
   const { id } = req.params;
   try {
     if (!id) {
