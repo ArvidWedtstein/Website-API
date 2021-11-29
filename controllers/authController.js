@@ -237,15 +237,17 @@ exports.changeProfileimg = async (req, res, next) => {
 
 exports.changePerms = async (req, res, next) => {
   const { id } = req.params;
-  const { permissions, pass } = req.body
+  const { permissions, user } = req.body
+  const { password, role } = user;
   try {
     const user = await userModel.findOneAndUpdate(
       {
         _id: id,
-        password: pass
+        password: password
       },
       {
         role: {
+          name: role.name,
           permissions: permissions
         }
       }
