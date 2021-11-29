@@ -65,6 +65,7 @@ exports.newRating = async (req, res, next) => {
   
 exports.getRatings = async (req, res, next) => {
   const reviews = await reviewModel.find();
+  console.log(reviews)
   res.status(200).json({
     reviews
   });
