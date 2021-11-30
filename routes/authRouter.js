@@ -32,8 +32,8 @@ const authenticateMiddleware = (req, res, next) => {
 router.post("/signin", authController.postSignin);
 router.post("/login", authController.postLogin);
 //router.delete("/logout", authController.postLogout);
-router.get("/getUser", authenticateMiddleware, authController.getUser);
-router.get("/getUserId/:id", authenticateMiddleware, authController.getUser);
+router.get("/getUser", authController.getUser);
+router.get("/getUserId/:id", authController.getUser);
 router.get("/allusers", authController.getAllUsers);
 router.post("/postUpdateuser", authenticateMiddleware, authController.postUpdateUser);
 router.post("/changePassword", authenticateMiddleware, authController.changePassword);
