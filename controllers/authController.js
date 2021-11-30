@@ -43,7 +43,7 @@ const Tradesman = new Role('Tradesman', rankicons["Tradesman"], "#279e00",[perm.
 const Knight = new Role('Knight', rankicons["Knight"], "#727272", [perm.VIEW_POST, perm.VIEW_PROJECTS])
 const Nobles = new Role('Nobles', rankicons["Nobles"], "#6d0821", [perm.VIEW_POST, perm.CREATE_POST, perm.VIEW_PROJECTS])
 const Preast = new Role('Preast', rankicons["Preast"], "#87049b", [perm.VIEW_POST, perm.CREATE_POST, perm.MODIFY_POST, perm.VIEW_PROJECTS, perm.KICK_USER])
-const Admin = new Role('Admin', rankicons["Admin"], "#ff0000", [perm.VIEW_POST, perm.CREATE_POST, perm.DELETE_POST, perm.MODIFY_POST, perm.MODIFY_USERS, perm.VIEW_PROJECTS, perm.CAN_CONTACT, perm.KICK_USER, perm.CREATE_PROJECT])
+const Admin = new Role('Admin', rankicons["Admin"], "#dc3545", [perm.VIEW_POST, perm.CREATE_POST, perm.DELETE_POST, perm.MODIFY_POST, perm.MODIFY_USERS, perm.VIEW_PROJECTS, perm.CAN_CONTACT, perm.KICK_USER, perm.CREATE_PROJECT])
 const roles = {
   "Peasant": Peasant,
   "Tradesman": Tradesman,
@@ -176,36 +176,31 @@ exports.postUpdateUser = async (req, res, next) => {
 };
 //^[a-zA-Z0-9]+$
 exports.changePassword = async (req, res, next) => {
-  const { email, password, repPassword } = req.body;
+  let { ...args } = req.body;
   try {
-    if (password != repPassword) {
-      const error = new Error("passwords don't match!");
-      error.statusCode = 401;
-      throw error;
-    }
-    if (password == "" || repPassword == "") {
+    if (args.password == "") {
       const error = new Error("passwords can't be empty");
       error.statusCode = 401;
       throw error;
     }
-    if (password.match("^[a-zA-Z]+$") == false || repPassword.match("^[a-zA-Z0-9]+$") == false) {
-      const error = new Error("One (or both) passwords contain invalid characters");
-      error.statusCode = 401;
-      throw error;
+    if (!args.email) {
+      email = loadedUser.email;
     }
-    const hashedPassword = await bcrypt.hash(password, 12);
-    const user = await userModel.findOneAndUpdate(
-      {
-        email: email
-      },
-      {
-        password: hashedPassword
-      }
-    )
-    console.log(user)
-    res.status(200).json({
-      message: "Changed password"
-    })
+    if (args.email && args.password) {
+      const user = await userModel.findOneAndUpdate(
+        {
+          email: email
+        },
+        {
+          args
+        }
+      )
+      console.log(user)
+      res.status(200).json({
+        message: "Changed password"
+      })
+    }
+    
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
@@ -249,6 +244,8 @@ exports.changePerms = async (req, res, next) => {
       {
         role: {
           name: role.name,
+          icon: role.icon,
+          color: role.color,
           permissions: permissions
         }
       }
