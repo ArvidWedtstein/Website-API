@@ -52,8 +52,8 @@ exports.getnewspost = async (req, res, next) => {
   });
 }
 exports.getnewspostuser = async (req, res, next) => {
-  const { id } = req.params;
-  const posts = await newspostModel.find({ author.name: id });
+  const { name } = req.params;
+  const posts = await newspostModel.find({ 'author.name': name });
   //console.log(posts)
   res.status(200).json({
     posts: posts
