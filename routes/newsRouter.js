@@ -19,5 +19,6 @@ const upload = multer({
 router.post("/newspost", upload.single("image"), newsController.newspost);
 router.get("/getnewsposts", newsController.getnewsposts);
 router.get("/getnewspost/:id", newsController.getnewspost);
+router.get("/getnewspostuser/:id", newsController.getnewspostuser);
 router.delete("/deletenewspost", newsController.deletenewsposts);
 module.exports = router;
