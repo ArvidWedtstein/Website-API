@@ -1,10 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-
+var cors = require('cors')
 const path = require('path');
-
-
+const jwt = require("jsonwebtoken");
+var helmet = require('helmet')
 const fs = require('fs')
 
 require('dotenv').config();
@@ -14,11 +14,26 @@ const projectRouter = require("./routes/projectRouter");
 const newsRouter = require("./routes/newsRouter");
 
 const app = express();
+app.use(cors())
+app.use(helmet())
+//app.disable('x-powered-by')
 app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }))
 app.use('/uploads', express.static('uploads'));
 
+var allowlist = ['http://localhost:3000', 'https://arvidw.space']
+var corsOptionsDelegate = function (req, callback) {
+  var corsOptions;
+  if (allowlist.indexOf(req.header('Origin')) !== -1) {
+    corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
+  } else {
+    corsOptions = { origin: false } // disable CORS for this request
+  }
+  callback(null, corsOptions) // callback expects two parameters: error and options
+}
+app.use(cors(corsOptionsDelegate));
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Origin", 'http://localhost:3000', 'https://arvidw.space')
   res.setHeader(
     "Access-Control-Allow-Methods",
     "OPTIONS, GET, POST, PUT, PATCH, DELETE"
@@ -27,7 +42,7 @@ app.use((req, res, next) => {
   next();
 });
 
-
+//app.use(authenticateMiddleware);
 // Router //
 app.use("/api/auth", authRouter);
 app.use("/api/project", projectRouter);

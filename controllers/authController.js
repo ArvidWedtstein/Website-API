@@ -6,7 +6,7 @@ const projectModel = require('../models/projectModel');
 const jwt = require("jsonwebtoken");
 var Binary = require('mongodb').Binary;
 const emailjs = require('emailjs-com');
-
+require('dotenv').config()
 
 const perm = {
   CREATE_POST: "CREATE_POST",
@@ -116,12 +116,6 @@ exports.postLogin = async (req, res, next) => {
       error.statusCode = 418;
       throw error;
     }
-    console.log(loadedUser)
-    /*if (email == loadedUser.email) {
-      const error = new Error("user is already logged in");
-      error.statusCode = 417;
-      throw error;
-    }*/
     loadedUser = user;
     const comparePassword = await bcrypt.compare(password, user.password);
     
@@ -131,7 +125,6 @@ exports.postLogin = async (req, res, next) => {
       throw error;
       
     }
-    console.log('login')
     const token = jwt.sign({ email: loadedUser.email }, "expressnuxtsecret", {
       expiresIn: "20m",
     });
@@ -156,9 +149,7 @@ exports.postUpdateUser = async (req, res, next) => {
         role: roles[role]
       }
     )
-    console.log(user)
     user.save()
-    console.log(user)
     if (!user) {
       const error = new Error("user with this email not found!");
       error.statusCode = 401;
@@ -343,29 +334,9 @@ exports.getRoles = async (req, res, next) => {
   });
 }
 
-/* Verification */
-exports.sendVerificationCode = async (req, res, next) => {
-  const { name, email, target } = req.body;
-  verificationcode = "123456";
-  try {
-    emailjs.sendForm('service_5s4j6tk', 'template_2v29ddt', target, 'user_iJj06RAflifrwnzoXxkoy',{
-      name: name,
-      email: email,
-      message: verificationcode
-    }).then((result) => {
 
-    })
-    res.status(200).json({ message: "Verification code sent. Check your email", modal: true });
-  } catch (err) {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-    next(err);
-  }
-}
 exports.postLogout = async (req, res, next) => {
   console.log('plis sign out')
-
   try {
     res.status(200).json({ message: 'signed out' });
   } catch (err) {
