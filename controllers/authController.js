@@ -224,6 +224,7 @@ exports.changeProfileimg = async (req, res, next) => {
 
 exports.changePerms = async (req, res, next) => {
   const { id } = req.params;
+  console.log(id)
   const { permissions, user } = req.body
   const { password, role } = user;
   try {

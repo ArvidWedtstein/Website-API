@@ -37,7 +37,7 @@ router.get("/getUserId/:id", authController.getUser);
 router.get("/allusers", authController.getAllUsers);
 router.post("/postUpdateuser", authenticateMiddleware, authController.postUpdateUser);
 router.post("/changePassword", authenticateMiddleware, authController.changePassword);
-router.post("/changePerms/:id", authenticateMiddleware, authController.changePerms);
+router.post("/changePerms/:id", authController.changePerms);
 router.post("/changeProfileimg", upload.single("profileimg"), authController.changeProfileimg);
 router.get("/getRole/:id", authController.getRole);
 router.get("/getRoles", authController.getRoles);
