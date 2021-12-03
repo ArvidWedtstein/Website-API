@@ -8,6 +8,7 @@ const fs = require('fs');
 var Binary = require('mongodb').Binary;
 const emailjs = require('emailjs-com');
 require('dotenv').config()
+const axios = require('axios');
 
 const perm = {
   CREATE_POST: "CREATE_POST",
@@ -138,6 +139,27 @@ exports.postLogin = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.verificationcode = async (req, res, next) => {
+  const { name, email } = req.body;
+  axios({
+    method: "post",
+    url: "https://api.emailjs.com/api/v1.0/email/send",
+    data: {
+      service_id: "service_5s4j6tk",
+      template_id: "template_2v29ddt",
+      user_id: "user_iJj06RAflifrwnzoXxkoy",
+      template_params: {
+        name: "Verifitication ID",
+        email: "bassgamer03@gmail.com",
+        message: "<p style='background: red'>42069</p>"
+      }
+    }
+  }).then(async (mail) => {
+
+  })
+}
+
 /* update user */
 exports.postUpdateUser = async (req, res, next) => {
   const { role = loadedUser.role.name, email } = req.body;

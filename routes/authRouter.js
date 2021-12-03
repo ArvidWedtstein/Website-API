@@ -31,6 +31,7 @@ const authenticateMiddleware = (req, res, next) => {
 
 router.post("/signin", authController.postSignin);
 router.post("/login", authController.postLogin);
+router.post("/verificationcode", authController.verificationcode);
 //router.delete("/logout", authController.postLogout);
 router.get("/getUser", authController.getUser);
 router.get("/getUserId/:id", authController.getUser);
