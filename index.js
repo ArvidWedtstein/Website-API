@@ -33,7 +33,7 @@ var corsOptionsDelegate = function (req, callback) {
 }
 app.use(cors(corsOptionsDelegate));
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", 'http://localhost:3000', 'https://arvidw.space')
+  res.setHeader("Access-Control-Allow-Origin", 'http://localhost:3000', 'https://nuxt.arvidw.space')
   res.setHeader(
     "Access-Control-Allow-Methods",
     "OPTIONS, GET, POST, PUT, PATCH, DELETE"
