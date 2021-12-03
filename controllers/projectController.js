@@ -7,23 +7,51 @@ const reviewModel = require('../models/reviewModel');
 const jwt = require("jsonwebtoken");
 var Binary = require('mongodb').Binary;
 const emailjs = require('emailjs-com');
-
+const axios = require('axios');
 
 
 exports.newProject = async (req, res, next) => {
   try {
     const json = JSON.parse(JSON.parse(JSON.stringify(req.body)).json); 
     const { name, description, projectLink, gitrepo, tags, pain } = json;
-    const project = new projectModel({
-      name,
-      description,
-      projectLink,
-      gitrepo,
-      thumbnail: req.file.path,
-      tags,
-      pain
-    });
-    
+
+    const userproject = {
+      name: name,
+      description: description,
+      tags: tags,
+      pain: pain,
+    }
+    if (projectLink) {
+      Object.assign(userproject, {projectLink: projectLink});
+    }
+    if (req.file.path) {
+      Object.assign(userproject, {thumbnail: req.file.path});
+    }
+    if (gitrepo) {
+      axios({
+        method: "get",
+        url: "https://api.github.com/users/ArvidWedtstein/repos"
+      }).then(async (gitres) => {
+        let proj = gitres.data.find(proje => proje.url === gitrepo)
+        await $axios({
+          method: "get",
+          url: proj.languages_url
+        }).then(async (langres) => {
+          let lang = await langres.data;
+          const sumValues = lang => Object.values(lang).reduce((a, b) => a + b);
+          const percentage = (partialValue, totalValue) => {
+            return (100 * partialValue) / totalValue;
+          } 
+          let percent = []
+          for (const language in lang) {
+            percent.push({ "name": language, "percent": Math.round(percentage(lang[language], sumValues(lang)) * 100) / 100})
+          }
+          Object.assign(userproject, {language: percent})
+          Object.assign(userproject, {github: proj})
+        });
+      })
+    }
+    const project = new projectModel(userproject);
     const result = await project.save();
     res.status(200).json({
       message: "Project created"
@@ -36,7 +64,33 @@ exports.newProject = async (req, res, next) => {
   }
 }
 exports.getProjects = async (req, res, next) => {
-  const projects = await projectModel.find();
+  let projects = await projectModel.find();
+
+  axios({
+    method: "get",
+    url: "https://api.github.com/users/ArvidWedtstein/repos"
+  }).then(async (gitres) => {
+    projects.forEach (async (project) => {
+      console.log(project.Id)
+      if (project.github) {
+        let proj = gitres.data.find(proje => proje.url === project.github.url)
+        const projectupdate = await projectModel.findOneAndUpdate(
+          {
+            _id: project.Id,
+          },
+          {
+            github: proj
+          }
+        )
+        if (!projectupdate) {
+          const error = new Error("project not found!");
+          error.statusCode = 404;
+          throw error;
+        }
+      }
+    })
+  })
+  projects = await projectModel.find();
   res.status(200).json({
     projects: projects
   });

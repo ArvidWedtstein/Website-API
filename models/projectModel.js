@@ -2,24 +2,17 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
+const reqString = {
+  type: String,
+  required: true
+};
 const projectSchema = new Schema(
   {
-    name: {
-      type: String,
-      required: true,
-    },
-    description: {
-      type: String,
-      required: true,
-    },
+    name: reqString,
+    description: reqString,
     projectLink: {
       type: String,
       required: false
-    },
-    gitrepo: {
-      type: String,
-      required: false,
     },
     thumbnail: {
       type: String,
@@ -32,7 +25,15 @@ const projectSchema = new Schema(
     pain: {
       type: Number,
       required: true
-    }
+    },
+    language: {
+      type: Array,
+      required: false
+    },
+    github: {
+      type: Object,
+      required: false,
+    },
   },
   { timestamps: true }
 );
