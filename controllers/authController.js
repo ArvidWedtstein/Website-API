@@ -4,6 +4,7 @@ const newspostModel = require("../models/newspostModel");
 const printModel = require('../models/printModel');
 const projectModel = require('../models/projectModel');
 const jwt = require("jsonwebtoken");
+const fs = require('fs');
 var Binary = require('mongodb').Binary;
 const emailjs = require('emailjs-com');
 require('dotenv').config()
@@ -92,6 +93,7 @@ exports.postSignin = async (req, res, next) => {
       user: result,
     });
   } catch (err) {
+    console.log(err)
     if (!err.statusCode) {
       err.statusCode = 500;
     }
