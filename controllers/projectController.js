@@ -13,8 +13,8 @@ const axios = require('axios');
 exports.newProject = async (req, res, next) => {
   try {
     const json = JSON.parse(JSON.parse(JSON.stringify(req.body)).json); 
-    const { name, description, projectLink, gitrepo, tags, pain } = json;
-    //const { name, description, projectLink, gitrepo, tags, pain } = req.body;
+    //const { name, description, projectLink, gitrepo, tags, pain } = json;
+    const { name, description, projectLink, gitrepo, tags, pain } = req.body;
     const userproject = {
       name: name,
       description: description,
