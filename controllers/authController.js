@@ -156,7 +156,10 @@ exports.verificationcode = async (req, res, next) => {
       }
     }
   }).then(async (mail) => {
-
+    res.status(200).json({
+      message: "Changes successful",
+      data: mail
+    })
   })
 }
 
