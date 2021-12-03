@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }))
 app.use('/uploads', express.static('uploads'));
 
-var allowlist = ['http://localhost:3000', 'https://arvidw.space']
+var allowlist = ['http://localhost:3000', 'https://arvidw.space', 'https://nuxt.arvidw.space', 'https://nuxt.arvidw.space/auth/register']
 var corsOptionsDelegate = function (req, callback) {
   var corsOptions;
   if (allowlist.indexOf(req.header('Origin')) !== -1) {
