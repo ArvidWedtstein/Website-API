@@ -33,9 +33,8 @@ var corsOptionsDelegate = function (req, callback) {
 }
 app.use(cors(corsOptionsDelegate));
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", 'https://nuxt.arvidw.space')
-  res.setHeader("Access-Control-Allow-Origin", 'https://nuxtarvidw.netlify.app')
-  res.setHeader("Access-Control-Allow-Origin", 'http://localhost:3000')
+  /*res.setHeader("Access-Control-Allow-Origin", 'https://nuxt.arvidw.space')
+  res.setHeader("Access-Control-Allow-Origin", 'https://nuxtarvidw.netlify.app')*/
   res.setHeader(
     "Access-Control-Allow-Methods",
     "OPTIONS, GET, POST, PUT, PATCH, DELETE"

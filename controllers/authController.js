@@ -142,20 +142,12 @@ exports.postLogin = async (req, res, next) => {
 
 exports.verificationcode = async (req, res, next) => {
   const { name, email } = req.body;
-  axios({
-    method: "post",
-    url: "https://api.emailjs.com/api/v1.0/email/send",
-    data: {
-      service_id: "service_5s4j6tk",
-      template_id: "template_2v29ddt",
-      user_id: "user_iJj06RAflifrwnzoXxkoy",
-      template_params: {
-        name: "Verifitication ID",
-        email: "bassgamer03@gmail.com",
-        message: "<p style='background: red'>42069</p>"
-      }
-    }
+  await axios.post("https://api.emailjs.com/api/v1.0/email/send", {
+    service_id: "service_5s4j6tk",
+    template_id: "template_2v29ddt",
+    user_id: "user_iJj06RAflifrwnzoXxkoy"
   }).then(async (mail) => {
+    console.log(mail)
     res.status(200).json({
       message: "Changes successful",
       data: mail
