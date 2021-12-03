@@ -12,9 +12,9 @@ const axios = require('axios');
 
 exports.newProject = async (req, res, next) => {
   try {
-    //const json = JSON.parse(JSON.parse(JSON.stringify(req.body)).json); 
-    //const { name, description, projectLink, gitrepo, tags, pain } = json;
-    const { name, description, projectLink, gitrepo, tags, pain } = req.body;
+    const json = JSON.parse(JSON.parse(JSON.stringify(req.body)).json); 
+    const { name, description, projectLink, gitrepo, tags, pain } = json;
+    //const { name, description, projectLink, gitrepo, tags, pain } = req.body;
     const userproject = {
       name: name,
       description: description,
@@ -76,7 +76,6 @@ exports.getProjects = async (req, res, next) => {
     url: "https://api.github.com/users/ArvidWedtstein/repos"
   }).then(async (gitres) => {
     projects.forEach (async (project) => {
-      console.log(project.Id)
       if (project.github) {
         let proj = gitres.data.find(proje => proje.url === project.github.url)
         const projectupdate = await projectModel.findOneAndUpdate(
