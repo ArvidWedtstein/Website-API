@@ -12,9 +12,9 @@ const axios = require('axios');
 
 exports.newProject = async (req, res, next) => {
   try {
-    const json = JSON.parse(JSON.parse(JSON.stringify(req.body)).json); 
-    const { name, description, projectLink, gitrepo, tags, pain } = json;
-
+    //const json = JSON.parse(JSON.parse(JSON.stringify(req.body)).json); 
+    //const { name, description, projectLink, gitrepo, tags, pain } = json;
+    const { name, description, projectLink, gitrepo, tags, pain } = req.body;
     const userproject = {
       name: name,
       description: description,
@@ -24,7 +24,7 @@ exports.newProject = async (req, res, next) => {
     if (projectLink) {
       Object.assign(userproject, {projectLink: projectLink});
     }
-    if (req.file.path) {
+    if (req.file) {
       Object.assign(userproject, {thumbnail: req.file.path});
     }
     if (gitrepo) {
@@ -32,8 +32,8 @@ exports.newProject = async (req, res, next) => {
         method: "get",
         url: "https://api.github.com/users/ArvidWedtstein/repos"
       }).then(async (gitres) => {
-        let proj = gitres.data.find(proje => proje.url === gitrepo)
-        await $axios({
+        let proj = gitres.data.find(proje => proje.html_url === gitrepo)
+        await axios({
           method: "get",
           url: proj.languages_url
         }).then(async (langres) => {
@@ -48,15 +48,20 @@ exports.newProject = async (req, res, next) => {
           }
           Object.assign(userproject, {language: percent})
           Object.assign(userproject, {github: proj})
+          console.log(userproject)
+          const project = await new projectModel(userproject);
+          const result = await project.save();
         });
-      })
+      });
+    } else {
+      const project = await new projectModel(userproject);
+      const result = await project.save();
     }
-    const project = new projectModel(userproject);
-    const result = await project.save();
     res.status(200).json({
       message: "Project created"
     });
   } catch (err) {
+    console.log(err)
     if (!err.statusCode) {
       err.statusCode = 500;
     }

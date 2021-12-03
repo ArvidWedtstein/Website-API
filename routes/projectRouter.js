@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/");
+    cb(null, "/uploads/");
   },
   filename: (req, file, cb) => {
     cb(null, `${file.fieldname}-${Date.now()}.jpg`)
@@ -15,7 +15,7 @@ const upload = multer({
 });
 const storage2 = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/3dprint");
+    cb(null, "/uploads/3dprint");
   },
   filename: (req, file, cb) => {
     cb(null, `${file.fieldname}-${Date.now()}.stl`)
@@ -30,7 +30,8 @@ const upload2 = multer({
 const projectController = require("../controllers/projectController");
 
 
-router.post("/newProject", upload.single("thumbnail"), projectController.newProject);
+//router.post("/newProject", upload.single("thumbnail"), projectController.newProject);
+router.post("/newProject", projectController.newProject);
 router.get("/getProjects", projectController.getProjects);
 
 // 3D Print \\
