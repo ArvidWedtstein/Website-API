@@ -369,14 +369,14 @@ exports.postLogout = async (req, res, next) => {
 
 
 exports.getUserId = async (req, res, next) => {
-  
+  console.log(req)
+  const { id } = req.params;
   try {
-    const { id } = req.params;
-    /*if (!id) {
+    if (!id) {
       const error = new Error(`invalid UID +  ${req.params}`);
       error.statusCode = 404;
       throw error;
-    }*/
+    }
     console.log(id)
     var o_id = new ObjectId(id);
     const user = await userModel.find({ _id: o_id });

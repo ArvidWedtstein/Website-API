@@ -34,7 +34,7 @@ router.post("/login", authController.postLogin);
 router.post("/verificationcode", authController.verificationcode);
 //router.delete("/logout", authController.postLogout);
 router.get("/getUser", authController.getUser);
-router.get("/getUserId/:id", authController.getUser);
+router.get("/getUserId/:id", authController.getUserId);
 router.get("/allusers", authController.getAllUsers);
 router.post("/postUpdateuser", authenticateMiddleware, authController.postUpdateUser);
 router.post("/changePassword", authenticateMiddleware, authController.changePassword);
