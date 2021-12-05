@@ -9,7 +9,7 @@ var Binary = require('mongodb').Binary;
 const emailjs = require('emailjs-com');
 require('dotenv').config()
 const axios = require('axios');
-
+const ObjectId = require('mongodb').ObjectId;
 const perm = {
   CREATE_POST: "CREATE_POST",
   DELETE_POST: "DELETE_POST",
@@ -372,11 +372,12 @@ exports.getUserId = async (req, res, next) => {
   const { id } = req.params;
   try {
     if (!id) {
-      const error = new Error("invalid uid");
+      const error = new Error("invalid UID");
       error.statusCode = 404;
       throw error;
     }
-    const user = await userModel.find({ '_id': ObjectId(id) });
+    var o_id = new ObjectId(id);
+    const user = await userModel.find({ _id: o_id });
     console.log(user)
     if (!user) {
       const error = new Error("user not found");
