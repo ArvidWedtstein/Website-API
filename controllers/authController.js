@@ -372,7 +372,7 @@ exports.getUserId = async (req, res, next) => {
   const { id } = req.params;
   try {
     if (!id) {
-      const error = new Error("invalid UID");
+      const error = new Error(`invalid UID +  ${req.params}`);
       error.statusCode = 404;
       throw error;
     }
@@ -394,6 +394,7 @@ exports.getUserId = async (req, res, next) => {
     next(err);
   }
 };
+
 exports.getUser = async (req, res, next) => {
   try {
     if (loadedUser) {
