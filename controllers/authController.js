@@ -369,8 +369,9 @@ exports.postLogout = async (req, res, next) => {
 
 
 exports.getUserId = async (req, res, next) => {
-  const { id } = req.params;
+  
   try {
+    const { id } = req.params;
     /*if (!id) {
       const error = new Error(`invalid UID +  ${req.params}`);
       error.statusCode = 404;
