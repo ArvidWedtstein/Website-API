@@ -376,7 +376,7 @@ exports.getUserId = async (req, res, next) => {
       error.statusCode = 404;
       throw error;
     }
-    const user = await userModel.find({ '_id': id });
+    const user = await userModel.find({ '_id': ObjectId(id) });
     console.log(user)
     if (!user) {
       const error = new Error("user not found");
