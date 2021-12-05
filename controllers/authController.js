@@ -386,6 +386,7 @@ exports.getUserId = async (req, res, next) => {
       error.statusCode = 404;
       throw error;
     }
+    let user = user[0]
     res.status(200).json({
       user
     })
