@@ -154,3 +154,12 @@ exports.getPrints = async (req, res, next) => {
     prints: prints
   });
 }
+
+exports.getPrint = async (req, res, next) => {
+  const { id } = req.params;
+  const print = await printModel.find({ _id: id });
+  //console.log(prints)
+  res.status(200).json({
+    prints: print
+  });
+}
