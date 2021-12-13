@@ -11,7 +11,7 @@ const emailjs = require('emailjs-com');
 exports.newspost = async (req, res, next) => {
   const body = JSON.parse(JSON.parse(JSON.stringify(req.body)).json); 
   try {
-    const { title, description, author, textBlocks, sectionBlocks, tags } = body;
+    const { title, description, author, sectionBlocks, tags } = body;
     const json = {
       title,
       description,
@@ -21,9 +21,6 @@ exports.newspost = async (req, res, next) => {
     console.log(tags)
     if (req.file) {
       Object.assign(json, {image: req.file.path})
-    }
-    if (textBlocks) {
-      Object.assign(json, {textBlocks})
     }
     if (sectionBlocks) {
       Object.assign(json, {sectionBlocks})

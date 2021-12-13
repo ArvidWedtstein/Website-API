@@ -17,10 +17,6 @@ const newspostSchema = new Schema(
       type: Object,
       required: true,
     },
-    textBlocks: {
-      type: Object, 
-      required: false
-    },
     sectionBlocks: {
       type: Object,
       required: false
