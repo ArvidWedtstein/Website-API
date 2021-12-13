@@ -10,29 +10,40 @@ const emailjs = require('emailjs-com');
 /* News Posts/Blog */
 exports.newspost = async (req, res, next) => {
   const body = JSON.parse(JSON.parse(JSON.stringify(req.body)).json); 
-  const { title, description, author, tags } = body;
-  const json = {
-    title,
-    description,
-    author,
-    tags
-  }
-  console.log(tags)
-  if (req.file) {
-    Object.assign(json, {image: req.file.path})
-  }
-  let result;
   try {
+    const { title, description, author, textBlocks, sectionBlocks, tags } = body;
+    const json = {
+      title,
+      description,
+      author,
+      tags
+    }
+    console.log(tags)
+    if (req.file) {
+      Object.assign(json, {image: req.file.path})
+    }
+    if (textBlocks) {
+      Object.assign(json, {textBlocks})
+    }
+    if (sectionBlocks) {
+      Object.assign(json, {sectionBlocks})
+    }
+  
     const post = new newspostModel(json);
-    result = await post.save();
+    let result = await post.save();
+
+     
+    res.status(200).json({
+      message: "Post created",
+      post: result
+    });
   } catch (err) {
-    console.error(err)
+    console.log(err)
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
   }
- 
-  res.status(200).json({
-    message: "Post created",
-    post: { id: result.id, title: result.title, description: result.description, image: result.image, tags: result.tags },
-  });
 }
 
 exports.getnewsposts = async (req, res, next) => {
