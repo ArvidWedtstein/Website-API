@@ -132,7 +132,7 @@ exports.getRatings = async (req, res, next) => {
 exports.editRating = async (req, res, next) => {
   try {
     const { id } = req.params;
-    
+    console.log('editRATING')
     const { user, review, rating } = req.body
     if (!id) {
       const error = new Error("invalid ID!");
@@ -154,6 +154,9 @@ exports.editRating = async (req, res, next) => {
       error.statusCode = 404;
       throw error;
     }
+    res.status(200).json({
+      message: "Review Edited Successfully"
+    });
   } catch (err) {
     console.log(err)
     if (!err.statusCode) {
