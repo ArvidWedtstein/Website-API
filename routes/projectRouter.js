@@ -21,10 +21,16 @@ const storage2 = multer.diskStorage({
     cb(null, `${file.fieldname}-${Date.now()}.stl`)
   }
 })
-const upload2 = multer({
-  storage: storage2, 
-  limits: {fileSize: 1024*1024*5}
-});
+const authenticateMiddleware = (req, res, next) => {
+  const { authorization } = req.headers;
+  const token = authorization && authorization.split(" ")[1];
+  if (token == null) return res.sendStatus(401);
+  jwt.verify(token, 'expressnuxtsecret', (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user
+    next();
+  })
+};
 
 //const upload = multer({ dest: 'uploads/' })
 const projectController = require("../controllers/projectController");
@@ -41,5 +47,5 @@ router.get("/getPrint/:id", projectController.getPrint);
 // Rating \\
 router.post("/newRating", projectController.newRating);
 router.get("/getRatings", projectController.getRatings);
-router.put("/editRating/:id", projectController.editRating);
+router.put("/editRating/:id", authenticateMiddleware, projectController.editRating);
 module.exports = router;
