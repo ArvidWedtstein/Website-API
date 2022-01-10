@@ -156,7 +156,9 @@ exports.verificationcode = async (req, res, next) => {
 
 /* update user */
 exports.postUpdateUser = async (req, res, next) => {
-  const { role = loadedUser.role.name, email } = req.body;
+  const { authorization } = req.headers;
+  console.log(authorization)
+  const { role, email } = req.body;
   console.log(roles[role], email)
   try {
     const user = await userModel.findOneAndUpdate(
