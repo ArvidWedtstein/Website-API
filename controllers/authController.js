@@ -3,6 +3,7 @@ const userModel = require("../models/userModel");
 const newspostModel = require("../models/newspostModel");
 const printModel = require('../models/printModel');
 const projectModel = require('../models/projectModel');
+const reviewModel = require("../models/reviewModel");
 const jwt = require("jsonwebtoken");
 const fs = require('fs');
 var Binary = require('mongodb').Binary;
@@ -242,6 +243,28 @@ exports.changeProfileimg = async (req, res, next) => {
   }
 };
 
+exports.getAllUserData = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const userData = [];
+    const user = await userModel.findOne({ _id: id })
+    const posts = await newspostModel.find({ 'author.id': id })
+    const reviews = await reviewModel.find({ 'author.id': id })
+
+    userData.push(user)
+    userData.push(posts)
+    userData.push(reviews)
+    res.status(200).json({
+      message: "Acquired all user data",
+      data: userData
+    })
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+}
 exports.changePerms = async (req, res, next) => {
   const { id } = req.params;
   console.log(id)
