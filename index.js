@@ -44,7 +44,6 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   next();
 });
-
 //app.use(authenticateMiddleware);
 // Router //
 app.use("/api/auth", authRouter);

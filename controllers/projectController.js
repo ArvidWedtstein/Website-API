@@ -103,13 +103,13 @@ exports.getProjects = async (req, res, next) => {
 exports.newRating = async (req, res, next) => {
   try {
     const { author, rating, review } = req.body;
-    const project = new reviewModel({
+    const reviewDB = new reviewModel({
       author,
       rating,
       review
     });
     
-    const result = await project.save();
+    const result = await reviewDB.save();
     res.status(200).json({
       message: "Review Created"
     });
@@ -123,10 +123,44 @@ exports.newRating = async (req, res, next) => {
   
 exports.getRatings = async (req, res, next) => {
   const reviews = await reviewModel.find();
-  console.log(reviews)
+  //console.log(reviews)
   res.status(200).json({
     reviews
   });
+}
+
+exports.editRating = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    
+    const { user, review, rating } = req.body
+    if (!id) {
+      const error = new Error("invalid ID!");
+      error.statusCode = 404;
+      throw error;
+    }
+    const DBreview = await reviewModel.findOneAndUpdate(
+      {
+        _id: id
+      }, 
+      {
+        author: user,
+        rating: rating,
+        review: review
+      }
+    )
+    if (!DBreview) {
+      const error = new Error("review not found!");
+      error.statusCode = 404;
+      throw error;
+    }
+  } catch (err) {
+    console.log(err)
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
 }
   
 /* 3D print */
