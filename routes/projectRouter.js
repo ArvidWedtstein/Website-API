@@ -25,6 +25,7 @@ const storage2 = multer.diskStorage({
 const authenticateMiddleware = (req, res, next) => {
   const { authorization } = req.headers;
   const token = authorization && authorization.split(" ")[1];
+  console.log(token)
   if (token == null) return res.sendStatus(401);
   jwt.verify(token, 'expressnuxtsecret', (err, user) => {
     if (err) return res.sendStatus(403);
