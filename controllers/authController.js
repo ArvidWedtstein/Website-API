@@ -265,6 +265,23 @@ exports.getAllUserData = async (req, res, next) => {
     next(err);
   }
 }
+exports.deleteAllUserData = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const user = await userModel.deleteOne({ _id: id });
+    const posts = await newspostModel.deleteMany({ 'author.id': id })
+    const reviews = await reviewModel.deleteMany({ 'author.id': id })
+
+    res.status(200).json({
+      message: "Sucessfully deleted all user data"
+    })
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+}
 exports.changePerms = async (req, res, next) => {
   const { id } = req.params;
   console.log(id)
