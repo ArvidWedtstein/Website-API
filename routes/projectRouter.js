@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const multer = require('multer');
+const jwt = require("jsonwebtoken");
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "/uploads/");
@@ -47,5 +48,5 @@ router.get("/getPrint/:id", projectController.getPrint);
 // Rating \\
 router.post("/newRating", projectController.newRating);
 router.get("/getRatings", projectController.getRatings);
-router.put("/editRating/:id", authenticateMiddleware, projectController.editRating);
+router.post("/editRating/:id", authenticateMiddleware, projectController.editRating);
 module.exports = router;
