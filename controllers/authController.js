@@ -80,12 +80,11 @@ exports.postSignin = async (req, res, next) => {
       error.statusCode = 409;
       throw error;
     }
-    console.log(password.hash)
     //const hashedPassword = await bcrypt.hash(password, 12);
     const user = new userModel({
       name: name,
       email: email,
-      password: password.hash,
+      password: password || password.hash,
       role: Peasant
     });
     const result = await user.save();
