@@ -471,13 +471,12 @@ exports.getUser = async (req, res, next) => {
   try {
     if (loadedUser) {
       const role = await roleModel.find({ _id: loadedUser.role })
-      console.log(role)
       res.status(200).json({
         user: {
           id: loadedUser._id,
           name: loadedUser.name,
           email: loadedUser.email,
-          role[0],
+          role,
           profileimg: loadedUser.profileimg
         },
       });
@@ -503,7 +502,7 @@ exports.getAllUsers = async (req, res, next) => {
   users.forEach((user) => {
     user.role = roles.find(r => r._id === user.role);
   })
-  //console.log(users)
+  console.log(users)
   res.status(200).json({
     users: users
   });
