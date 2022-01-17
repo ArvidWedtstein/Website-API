@@ -43,9 +43,12 @@ router.post("/postUpdateuser", authController.postUpdateUser);
 router.post("/changePassword", authenticateMiddleware, authController.changePassword);
 router.post("/changePerms/:id", authController.changePerms);
 router.post("/changeProfileimg", upload.single("profileimg"), authController.changeProfileimg);
-router.get("/getRole/:id", authController.getRole);
-router.get("/getRoles", authController.getRoles);
 router.post("/banUser", authenticateMiddleware, authController.banUser);
 router.post("/unbanUser", authenticateMiddleware, authController.unbanUser);
+
+router.post("newRole", authenticateMiddleware, authController.newRole);
+router.get("/getRole/:id", authController.getRole);
+router.get("/getRoles", authController.getRoles);
+
 
 module.exports = router;

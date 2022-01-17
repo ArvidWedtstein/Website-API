@@ -4,6 +4,7 @@ const newspostModel = require("../models/newspostModel");
 const printModel = require('../models/printModel');
 const projectModel = require('../models/projectModel');
 const reviewModel = require("../models/reviewModel");
+const roleModel = require("../models/roleModel");
 const jwt = require("jsonwebtoken");
 const fs = require('fs');
 var Binary = require('mongodb').Binary;
@@ -19,6 +20,7 @@ const perm = {
   VIEW_POST: "VIEW_POST",
   VIEW_PROJECTS: "VIEW_PROJECTS",
   CREATE_PROJECT: "CREATE_PROJECT",
+  HIDE_PROJECT: "HIDE_PROJECT",
   CAN_CONTACT: "CAN_CONTACT",
   KICK_USER: "KICK_USER"
 }
@@ -46,7 +48,7 @@ const Tradesman = new Role('Tradesman', rankicons["Tradesman"], "#279e00",[perm.
 const Knight = new Role('Knight', rankicons["Knight"], "#727272", [perm.VIEW_POST, perm.VIEW_PROJECTS])
 const Nobles = new Role('Nobles', rankicons["Nobles"], "#6d0821", [perm.VIEW_POST, perm.CREATE_POST, perm.VIEW_PROJECTS])
 const Preast = new Role('Preast', rankicons["Preast"], "#87049b", [perm.VIEW_POST, perm.CREATE_POST, perm.MODIFY_POST, perm.VIEW_PROJECTS, perm.KICK_USER])
-const Admin = new Role('Admin', rankicons["Admin"], "#dc3545", [perm.VIEW_POST, perm.CREATE_POST, perm.DELETE_POST, perm.MODIFY_POST, perm.MODIFY_USERS, perm.VIEW_PROJECTS, perm.CAN_CONTACT, perm.KICK_USER, perm.CREATE_PROJECT])
+const Admin = new Role('Admin', rankicons["Admin"], "#dc3545", [perm.VIEW_POST, perm.CREATE_POST, perm.DELETE_POST, perm.MODIFY_POST, perm.MODIFY_USERS, perm.VIEW_PROJECTS, perm.CAN_CONTACT, perm.KICK_USER, perm.CREATE_PROJECT, perm.HIDE_PROJECT])
 const roles = {
   "Peasant": Peasant,
   "Tradesman": Tradesman,
@@ -370,6 +372,30 @@ exports.unbanUser = async (req, res, next) => {
   }
 }
 /* Roles */
+
+exports.newRole = async (req, res, next) => {
+  try {
+    console.log(req.body)
+    const { name, icon, color, permissions } = req.body;
+    const role = new roleModel({
+      name: name,
+      icon: icon,
+      color: color,
+      permissions: permissions
+    });
+    const result = await role.save();
+    res.status(200).json({
+      message: "Successfully created role",
+      role: result
+    });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+}
+
 exports.getRole = async (req, res, next) => {
   const { role } = req.params;
   try {
@@ -472,6 +498,5 @@ exports.getAllUsers = async (req, res, next) => {
     users: users
   });
 };
-
 
 

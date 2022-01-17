@@ -34,6 +34,11 @@ const projectSchema = new Schema(
       type: Object,
       required: false,
     },
+    hidden: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
   },
   { timestamps: true }
 );
