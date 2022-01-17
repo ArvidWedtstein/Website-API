@@ -11,11 +11,11 @@ const emailjs = require('emailjs-com');
 exports.newspost = async (req, res, next) => {
   const body = JSON.parse(JSON.parse(JSON.stringify(req.body)).json); 
   try {
-    const { title, description, author, sectionBlocks, tags } = body;
+    const { title, description, authorId, sectionBlocks, tags } = body;
     const json = {
       title,
       description,
-      author,
+      authorId,
       tags
     }
     console.log(tags)
@@ -45,8 +45,12 @@ exports.newspost = async (req, res, next) => {
 
 exports.getnewsposts = async (req, res, next) => {
   console.log('GET ALL NEWS POSTS')
-  const posts = await newspostModel.find();
-  //console.log(posts)
+  let posts = await newspostModel.find();
+  const users = await userModel.find();
+  posts.forEach(async (post) => {
+    post.author = users.find(user => user.id === post.author);
+  });
+  // console.log(posts)
   res.status(200).json({
     posts: posts
   });
