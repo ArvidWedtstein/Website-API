@@ -477,7 +477,7 @@ exports.getUser = async (req, res, next) => {
           id: loadedUser._id,
           name: loadedUser.name,
           email: loadedUser.email,
-          role: role[0],
+          role[0],
           profileimg: loadedUser.profileimg
         },
       });
