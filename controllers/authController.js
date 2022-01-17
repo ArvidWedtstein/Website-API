@@ -12,6 +12,7 @@ const emailjs = require('emailjs-com');
 require('dotenv').config()
 const axios = require('axios');
 const ObjectId = require('mongodb').ObjectId;
+const { LEGAL_TCP_SOCKET_OPTIONS } = require("mongoose/node_modules/mongodb");
 const perm = {
   CREATE_POST: "CREATE_POST",
   DELETE_POST: "DELETE_POST",
@@ -445,8 +446,9 @@ exports.getUserId = async (req, res, next) => {
     }
     console.log(id)
     var o_id = new ObjectId(id);
-    const user = await userModel.find({ _id: o_id });
+    let user = await userModel.find({ _id: o_id });
     const userrole = await roleModel.find({ _id: user[0].role })
+    user.role = userrole;
     console.log(user)
     if (!user) {
       const error = new Error("user not found");
@@ -468,12 +470,14 @@ exports.getUserId = async (req, res, next) => {
 exports.getUser = async (req, res, next) => {
   try {
     if (loadedUser) {
+      const role = await roleModel.find({ _id: loadedUser.role })
+      console.log(role)
       res.status(200).json({
         user: {
           id: loadedUser._id,
           name: loadedUser.name,
           email: loadedUser.email,
-          role: await roleModel.find({ _id: loadedUser.role }),
+          role: role[0],
           profileimg: loadedUser.profileimg
         },
       });
@@ -494,7 +498,11 @@ exports.getUser = async (req, res, next) => {
 // CHANGE TO INCLUDE ROLE
 exports.getAllUsers = async (req, res, next) => {
   console.log('GET ALL USERS')
-  const users = await userModel.find();
+  let users = await userModel.find();
+  const roles = await roleModel.find()
+  users.forEach((user) => {
+    user.role = roles.find(r => r._id === user.role);
+  })
   //console.log(users)
   res.status(200).json({
     users: users
