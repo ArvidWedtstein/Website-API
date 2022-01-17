@@ -13,6 +13,7 @@ require('dotenv').config()
 const axios = require('axios');
 const ObjectId = require('mongodb').ObjectId;
 const { LEGAL_TCP_SOCKET_OPTIONS } = require("mongoose/node_modules/mongodb");
+const { LEGAL_TLS_SOCKET_OPTIONS } = require("mongodb");
 const perm = {
   CREATE_POST: "CREATE_POST",
   DELETE_POST: "DELETE_POST",
@@ -498,16 +499,26 @@ exports.getUser = async (req, res, next) => {
 
 exports.getAllUsers = async (req, res, next) => {
   console.log('GET ALL USERS')
-  let users = await userModel.find();
-  const roles = await roleModel.find()
-  users.forEach(async (user) => {
-    let role = await roles.find(r => r._id === user.role);
-    console.log(role)
-    user.role = role;
-  })
-  res.status(200).json({
-    users: users
-  });
+  let users2 = await userModel.find();
+  let roles = await roleModel.find();
+  let users = users2;
+  for(let i = 0; i < users.length; i++) {
+    for (let r = 0; r < roles.length; r++) {
+      console.log(roles[r].id === users[i].role)
+      if (roles[r].id === users[i].role) {
+        users[i].role = roles[r];
+        console.log(users[i].role)
+      }
+    }
+  }
+  
+  setTimeout(() => {
+    //console.log(users)
+    res.status(200).json({
+      users
+    });
+  }, 1000)
+  
 };
 
 
