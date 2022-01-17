@@ -507,7 +507,7 @@ exports.getAllUsers = async (req, res, next) => {
       console.log(roles[r].id === users[i].role)
       if (roles[r].id === users[i].role) {
         users[i].role = roles[r];
-        console.log(users[i].role)
+        console.log(roles[r].name)
       }
     }
   }
