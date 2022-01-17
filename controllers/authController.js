@@ -470,7 +470,9 @@ exports.getUserId = async (req, res, next) => {
 exports.getUser = async (req, res, next) => {
   try {
     if (loadedUser) {
-      const role = await roleModel.find({ _id: loadedUser.role })
+      let role = await roleModel.find({ _id: loadedUser.role })
+      console.log(role)
+      role = role[0]
       res.status(200).json({
         user: {
           id: loadedUser._id,
@@ -494,7 +496,7 @@ exports.getUser = async (req, res, next) => {
 };
 
 
-// CHANGE TO INCLUDE ROLE
+
 exports.getAllUsers = async (req, res, next) => {
   console.log('GET ALL USERS')
   let users = await userModel.find();
