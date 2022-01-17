@@ -46,7 +46,7 @@ router.post("/changeProfileimg", upload.single("profileimg"), authController.cha
 router.post("/banUser", authenticateMiddleware, authController.banUser);
 router.post("/unbanUser", authenticateMiddleware, authController.unbanUser);
 
-router.post("newRole", authenticateMiddleware, authController.newRole);
+router.post("/newRole", authenticateMiddleware, authController.newRole);
 router.get("/getRole/:id", authController.getRole);
 router.get("/getRoles", authController.getRoles);
 

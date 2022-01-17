@@ -375,8 +375,8 @@ exports.unbanUser = async (req, res, next) => {
 
 exports.newRole = async (req, res, next) => {
   try {
-    console.log(req.body)
     const { name, icon, color, permissions } = req.body;
+    console.log(req.body)
     const role = new roleModel({
       name: name,
       icon: icon,
