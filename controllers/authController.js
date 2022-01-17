@@ -83,12 +83,13 @@ exports.postSignin = async (req, res, next) => {
       error.statusCode = 409;
       throw error;
     }
+    const peasantroleid = "61e54d738d85aacb59ce3338"
     //const hashedPassword = await bcrypt.hash(password, 12);
     const user = new userModel({
       name: name,
       email: email,
       password: password || password.hash,
-      role: Peasant
+      role: peasantroleid
     });
     const result = await user.save();
     res.status(200).json({
@@ -250,7 +251,7 @@ exports.getAllUserData = async (req, res, next) => {
     const { id } = req.params;
     const userData = [];
     const user = await userModel.findOne({ _id: id })
-    const posts = await newspostModel.find({ 'author.id': id })
+    const posts = await newspostModel.find({ 'author': id })
     const reviews = await reviewModel.find({ 'author.id': id })
 
     userData.push(user)
@@ -290,6 +291,7 @@ exports.changePerms = async (req, res, next) => {
   const { permissions, user } = req.body
   const { password, role } = user;
   try {
+    // CHANGE. DOES NOT WORK. FIND FIGS
     const user = await userModel.findOneAndUpdate(
       {
         _id: id,
@@ -412,12 +414,9 @@ exports.getRole = async (req, res, next) => {
 }
 
 exports.getRoles = async (req, res, next) => {
-  let rolest = []
-  for (const key in roles) {
-    rolest.push(roles[key])
-  }
+  const roles = await roleModel.find();
   res.status(200).json({
-    roles: rolest
+    roles: roles
   });
 }
 
@@ -447,6 +446,7 @@ exports.getUserId = async (req, res, next) => {
     console.log(id)
     var o_id = new ObjectId(id);
     const user = await userModel.find({ _id: o_id });
+    const userrole = await roleModel.find({ _id: user[0].role })
     console.log(user)
     if (!user) {
       const error = new Error("user not found");
@@ -473,7 +473,7 @@ exports.getUser = async (req, res, next) => {
           id: loadedUser._id,
           name: loadedUser.name,
           email: loadedUser.email,
-          role: loadedUser.role,
+          role: await roleModel.find({ _id: loadedUser.role }),
           profileimg: loadedUser.profileimg
         },
       });
@@ -490,6 +490,8 @@ exports.getUser = async (req, res, next) => {
   }
 };
 
+
+// CHANGE TO INCLUDE ROLE
 exports.getAllUsers = async (req, res, next) => {
   console.log('GET ALL USERS')
   const users = await userModel.find();

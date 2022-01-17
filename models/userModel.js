@@ -18,8 +18,9 @@ const UserSchema = new Schema(
       required: true,
     },
     role: {
-        type: Object, 
+        type: String, 
         required: true,
+        default: "61e54d738d85aacb59ce3338" // Peasant role
     },
     profileimg: {
       type: String,
