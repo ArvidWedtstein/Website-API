@@ -7,13 +7,12 @@ const reviewModel = require("../models/reviewModel");
 const roleModel = require("../models/roleModel");
 const jwt = require("jsonwebtoken");
 const fs = require('fs');
-var Binary = require('mongodb').Binary;
+var mongodb, { Binary } = require('mongodb');
+const mongoose = require('mongoose');
 const emailjs = require('emailjs-com');
 require('dotenv').config()
 const axios = require('axios');
 const ObjectId = require('mongodb').ObjectId;
-const { LEGAL_TCP_SOCKET_OPTIONS } = require("mongoose/node_modules/mongodb");
-const { LEGAL_TLS_SOCKET_OPTIONS } = require("mongodb");
 const perm = {
   CREATE_POST: "CREATE_POST",
   DELETE_POST: "DELETE_POST",
@@ -498,27 +497,37 @@ exports.getUser = async (req, res, next) => {
 
 
 exports.getAllUsers = async (req, res, next) => {
-  console.log('GET ALL USERS')
   let users2 = await userModel.find();
   let roles = await roleModel.find();
-  let users = users2;
-  for(let i = 0; i < users.length; i++) {
+  let users = []
+  for(let i = 0; i < users2.length; i++) {
     for (let r = 0; r < roles.length; r++) {
-      console.log(roles[r].id === users[i].role)
-      if (roles[r].id === users[i].role) {
-        users[i].role = roles[r];
-        console.log(roles[r].name)
+      if (roles[r].id === users2[i].role) {
+        console.log(roles[r].id)
+        users.push({
+          _id: users2[i].id,
+          name: users2[i].name,
+          profileimg: users2[i].profileimg,
+          banned: users2[i].banned,
+          email: users2[i].email,
+          password: users2[i].password,
+          createdAt: users2[i].createdAt,
+          updatedAt: users2[i].updatedAt,
+          role: {
+            id: roles[r].id,
+            name: roles[r].name,
+            icon: roles[r].icon,
+            color: roles[r].color,
+            permissions: roles[r].permissions
+          }
+        })
       }
     }
   }
-  
-  setTimeout(() => {
-    //console.log(users)
-    res.status(200).json({
-      users
-    });
-  }, 1000)
-  
+  //console.log(users)
+  res.status(200).json({
+    users
+  });
 };
 
 
