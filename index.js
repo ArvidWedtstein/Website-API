@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const { MongoClient } = require('mongodb')
 var cors = require('cors')
 const path = require('path');
 const jwt = require("jsonwebtoken");
@@ -63,7 +64,28 @@ const MONGOOSE_URI = process.env.MONGODB_URL;
 mongoose.connect(MONGOOSE_URI).then((result) => {
     app.listen(process.env.PORT || 8080);
 }).catch((err) => console.log(err));
+mongoose.Promise = global.Promise;
 
+/*const client = MongoClient.connect(MONGOOSE_URI).then((client) => {
+  client.connect(async (err, db) => {
+    if (err || !db) {
+      return console.error(err)
+    } 
+
+    let test = db.db("website").aggregate([
+      {
+        $lookup: {
+          from: "roles",
+          localField: "role",
+          foreignField: "role",
+          as: "role"
+        }
+      }
+    ]);
+    console.log(test)
+  })
+  return client
+})*/
 
 /* Email */
 // https://dashboard.emailjs.com/admin

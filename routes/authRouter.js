@@ -39,7 +39,7 @@ router.delete("/deleteAllUserData:/id", authenticateMiddleware, authController.d
 router.get("/getUser", authController.getUser);
 router.get("/getUserId/:id", authController.getUserId);
 router.get("/allusers", authController.getAllUsers);
-router.post("/postUpdateuser", authController.postUpdateUser);
+router.post("/postUpdateuser", authenticateMiddleware, authController.postUpdateUser);
 router.post("/changePassword", authenticateMiddleware, authController.changePassword);
 router.post("/changePerms/:id", authController.changePerms);
 router.post("/changeProfileimg", upload.single("profileimg"), authController.changeProfileimg);

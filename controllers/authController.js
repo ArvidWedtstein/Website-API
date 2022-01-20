@@ -7,7 +7,7 @@ const reviewModel = require("../models/reviewModel");
 const roleModel = require("../models/roleModel");
 const jwt = require("jsonwebtoken");
 const fs = require('fs');
-var mongodb, { Binary } = require('mongodb');
+var mongodb, { Binary, MongoClient } = require('mongodb');
 const mongoose = require('mongoose');
 const emailjs = require('emailjs-com');
 require('dotenv').config()
@@ -162,16 +162,14 @@ exports.verificationcode = async (req, res, next) => {
 /* update user */
 exports.postUpdateUser = async (req, res, next) => {
   const { authorization } = req.headers;
-  console.log(authorization)
   const { role, email } = req.body;
-  console.log(roles[role], email)
   try {
     const user = await userModel.findOneAndUpdate(
       {
         email: email
       },
       {
-        role: roles[role]
+        role: role
       }
     )
     user.save()
@@ -495,7 +493,7 @@ exports.getUser = async (req, res, next) => {
 };
 
 
-
+// IMPLEMENT AGGREGATE/VIEW FUNCTION
 exports.getAllUsers = async (req, res, next) => {
   let users2 = await userModel.find();
   let roles = await roleModel.find();
