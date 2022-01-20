@@ -161,9 +161,13 @@ exports.verificationcode = async (req, res, next) => {
 
 /* update user */
 exports.postUpdateUser = async (req, res, next) => {
-  const { authorization } = req.headers;
   const { role, email } = req.body;
   try {
+    if (!role || !email) {
+      const error = new Error("role and/or email is not present");
+      error.statusCode = 404;
+      throw error;
+    }
     const user = await userModel.findOneAndUpdate(
       {
         email: email
