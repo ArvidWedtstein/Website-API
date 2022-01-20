@@ -19,6 +19,7 @@ const upload = multer({
 
 
 const authenticateMiddleware = (req, res, next) => {
+  console.log(req.headers)
   const { authorization } = req.headers;
   const token = authorization && authorization.split(" ")[1];
   console.log(token)
