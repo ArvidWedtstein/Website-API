@@ -78,7 +78,7 @@ exports.deletenewsposts = async (req, res, next) => {
   const { id } = req.body
   console.log('delete post')
   const post = await newspostModel.findOneAndDelete({id: id});
-  if (post) {
+  if (!post) {
     res.status(404).json({
       message: "Post Not Found"
     });
