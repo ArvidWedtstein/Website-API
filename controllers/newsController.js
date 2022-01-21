@@ -9,6 +9,7 @@ const emailjs = require('emailjs-com');
 
 /* News Posts/Blog */
 exports.newspost = async (req, res, next) => {
+  console.log(req.body)
   const body = JSON.parse(JSON.parse(JSON.stringify(req.body)).json); 
   try {
     const { title, description, authorId, sectionBlocks, tags } = body;
