@@ -13,11 +13,11 @@ exports.newspost = async (req, res, next) => {
   const body = req.body;
   //const body = JSON.parse(JSON.parse(JSON.stringify(req.body)).json); 
   try {
-    const { title, description, authorId, sectionBlocks, tags } = body;
+    const { title, description, author, sectionBlocks, tags } = body;
     const json = {
       title,
       description,
-      authorId,
+      author,
       tags
     }
     console.log(tags)
