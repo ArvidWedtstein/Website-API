@@ -15,7 +15,7 @@ const projectRouter = require("./routes/projectRouter");
 const newsRouter = require("./routes/newsRouter");
 
 const app = express();
-app.use(cors({origin: "*"}))
+//app.use(cors({origin: "*"}))
 app.use(helmet())
 //app.disable('x-powered-by')
 app.use(bodyParser.json());
@@ -32,7 +32,7 @@ var corsOptionsDelegate = function (req, callback) {
   }
   callback(null, corsOptions) // callback expects two parameters: error and options
 }
-// app.use(cors(corsOptionsDelegate));
+app.use(cors(corsOptionsDelegate));
 app.use((req, res, next) => {
   // res.setHeader("Access-Control-Allow-Origin", 'https://nuxt.arvidw.space')
   res.setHeader("Access-Control-Allow-Origin", 'https://nuxtarvidw.netlify.app')
