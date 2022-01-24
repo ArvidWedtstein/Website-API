@@ -80,7 +80,7 @@ exports.getProjects = async (req, res, next) => {
         let proj = gitres.data.find(proje => proje.url === project.github.url)
         const projectupdate = await projectModel.findOneAndUpdate(
           {
-            _id: project.Id,
+            _id: project.id,
           },
           {
             github: proj
