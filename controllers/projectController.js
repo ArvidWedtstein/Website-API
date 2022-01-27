@@ -68,6 +68,45 @@ exports.newProject = async (req, res, next) => {
     next(err);
   }
 }
+exports.hideProject = async (req, res, next) => {
+  try {
+    const { id, isHidden } = req.body;
+    projectModel.findByIdAndUpdate(
+      {
+        _id: id
+      },
+      {
+        hidden: isHidden
+      }
+    )
+    
+    res.status(200).json({
+      message: "Project updated"
+    });
+  } catch (err) {
+    console.log(err)
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+}
+exports.deleteProject = async (req, res, next) => {
+  try {
+    const { id } = req.body;
+    projectModel.findOneAndDelete({ _id: id })
+      
+    res.status(200).json({
+      message: "Project deleted"
+    });
+  } catch (err) {
+    console.log(err)
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+}
 exports.getProjects = async (req, res, next) => {
   let projects = await projectModel.find();
 

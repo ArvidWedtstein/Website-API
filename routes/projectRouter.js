@@ -41,6 +41,8 @@ const projectController = require("../controllers/projectController");
 //router.post("/newProject", upload.single("thumbnail"), projectController.newProject);
 router.post("/newProject", projectController.newProject);
 router.get("/getProjects", projectController.getProjects);
+router.post("/hideProject", projectController.hideProject);
+router.delete("/deleteProject", projectController.deleteProject);
 
 // 3D Print \\
 router.get("/getPrints", projectController.getPrints);
