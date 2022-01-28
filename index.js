@@ -22,18 +22,18 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }))
 app.use('/uploads', express.static('uploads'));
 
-// var allowlist = ['https://arvidw.space', "http://localhost:3000"]
-// var corsOptionsDelegate = function (req, callback) {
-//   var corsOptions;
-//   if (allowlist.indexOf(req.header('Origin')) !== -1) {
-//     corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
-//   } else {
-//     corsOptions = { origin: false } // disable CORS for this request
-//   }
-//   callback(null, corsOptions) // callback expects two parameters: error and options
-// }
-// app.use(cors(corsOptionsDelegate));
-/* app.use((req, res, next) => {
+var allowlist = ['https://arvidw.space', "http://localhost:3000"]
+var corsOptionsDelegate = function (req, callback) {
+  var corsOptions;
+  if (allowlist.indexOf(req.header('Origin')) !== -1) {
+    corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
+  } else {
+    corsOptions = { origin: false } // disable CORS for this request
+  }
+  callback(null, corsOptions) // callback expects two parameters: error and options
+}
+app.use(cors(corsOptionsDelegate));
+app.use((req, res, next) => {
   // res.setHeader("Access-Control-Allow-Origin", 'https://nuxt.arvidw.space')
   res.setHeader("Access-Control-Allow-Origin", 'https://nuxtarvidw.netlify.app')
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000")
@@ -44,7 +44,7 @@ app.use('/uploads', express.static('uploads'));
   );
   // res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   next();
-});*/
+});
 //app.use(authenticateMiddleware);
 // Router //
 app.use("/api/auth", authRouter);
