@@ -9,7 +9,6 @@ const emailjs = require('emailjs-com');
 
 /* News Posts/Blog */
 exports.newspost = async (req, res, next) => {
-  console.log(req.body)
   const body = req.body;
   //const body = JSON.parse(JSON.parse(JSON.stringify(req.body)).json); 
   try {
@@ -20,7 +19,6 @@ exports.newspost = async (req, res, next) => {
       author,
       tags
     }
-    console.log(tags)
     if (req.file) {
       Object.assign(json, {image: req.file.path})
     }
@@ -46,7 +44,6 @@ exports.newspost = async (req, res, next) => {
 }
 
 exports.getnewsposts = async (req, res, next) => {
-  console.log('GET ALL NEWS POSTS')
   let posts = await newspostModel.find();
   const users = await userModel.find();
   posts.forEach(async (post) => {
@@ -76,7 +73,6 @@ exports.getnewspostuser = async (req, res, next) => {
 
 exports.deletenewsposts = async (req, res, next) => {
   const { id } = req.body
-  console.log('delete post')
   const post = await newspostModel.findOneAndDelete({id: id});
   if (!post) {
     res.status(404).json({

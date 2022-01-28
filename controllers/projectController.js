@@ -48,7 +48,6 @@ exports.newProject = async (req, res, next) => {
           }
           Object.assign(userproject, {language: percent})
           Object.assign(userproject, {github: proj})
-          console.log(userproject)
           const project = await new projectModel(userproject);
           const result = await project.save();
         });
@@ -171,7 +170,6 @@ exports.getRatings = async (req, res, next) => {
 exports.editRating = async (req, res, next) => {
   try {
     const { id } = req.params;
-    console.log('editRATING')
     const { user, review, rating } = req.body
     if (!id) {
       const error = new Error("invalid ID!");

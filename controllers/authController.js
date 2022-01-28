@@ -151,7 +151,6 @@ exports.verificationcode = async (req, res, next) => {
     template_id: "template_2v29ddt",
     user_id: "user_iJj06RAflifrwnzoXxkoy"
   }).then(async (mail) => {
-    console.log(mail)
     res.status(200).json({
       message: "Changes successful",
       data: mail
@@ -213,7 +212,6 @@ exports.changePassword = async (req, res, next) => {
           args
         }
       )
-      console.log(user)
       res.status(200).json({
         message: "Changed password"
       })
@@ -227,7 +225,6 @@ exports.changePassword = async (req, res, next) => {
   }
 };
 exports.changeProfileimg = async (req, res, next) => {
-  console.log(req.file)
   try {
     const user = await userModel.findOneAndUpdate(
       {
@@ -290,7 +287,6 @@ exports.deleteAllUserData = async (req, res, next) => {
 }
 exports.changePerms = async (req, res, next) => {
   const { id } = req.params;
-  console.log(id)
   const { permissions, user } = req.body
   const { password, role } = user;
   try {
@@ -326,7 +322,6 @@ exports.changePerms = async (req, res, next) => {
 };
 
 exports.banUser = async (req, res, next) => {
-  console.log(req.body)
   try {
     const user = await userModel.findOneAndUpdate(
       {
@@ -381,7 +376,6 @@ exports.unbanUser = async (req, res, next) => {
 exports.newRole = async (req, res, next) => {
   try {
     const { name, icon, color, permissions } = req.body;
-    console.log(req.body)
     const role = new roleModel({
       name: name,
       icon: icon,
@@ -425,7 +419,6 @@ exports.getRoles = async (req, res, next) => {
 
 
 exports.postLogout = async (req, res, next) => {
-  console.log('plis sign out')
   try {
     res.status(200).json({ message: 'signed out' });
   } catch (err) {
@@ -438,7 +431,6 @@ exports.postLogout = async (req, res, next) => {
 
 
 exports.getUserId = async (req, res, next) => {
-  console.log(req)
   const { id } = req.params;
   try {
     if (!id) {
@@ -446,12 +438,10 @@ exports.getUserId = async (req, res, next) => {
       error.statusCode = 404;
       throw error;
     }
-    console.log(id)
     var o_id = new ObjectId(id);
     let user = await userModel.find({ _id: o_id });
     const userrole = await roleModel.find({ _id: user[0].role })
     user.role = userrole;
-    console.log(user)
     if (!user) {
       const error = new Error("user not found");
       error.statusCode = 404;
@@ -505,7 +495,6 @@ exports.getAllUsers = async (req, res, next) => {
   for(let i = 0; i < users2.length; i++) {
     for (let r = 0; r < roles.length; r++) {
       if (roles[r].id === users2[i].role) {
-        console.log(roles[r].id)
         users.push({
           _id: users2[i].id,
           name: users2[i].name,
@@ -526,7 +515,6 @@ exports.getAllUsers = async (req, res, next) => {
       }
     }
   }
-  //console.log(users)
   res.status(200).json({
     users
   });
