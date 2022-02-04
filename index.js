@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }))
 app.use('/uploads', express.static('uploads'));
 
-var allowlist = ['https://arvidw.space', "http://localhost:3000"]
+var allowlist = ['https://arvidw.space', "http://localhost:3000", "https://nuxtarvidw.netlify.app"]
 var corsOptionsDelegate = function (req, callback) {
   var corsOptions;
   if (allowlist.indexOf(req.header('Origin')) !== -1) {
@@ -36,7 +36,7 @@ app.use(cors(corsOptionsDelegate));
 app.use((req, res, next) => {
   // res.setHeader("Access-Control-Allow-Origin", 'https://nuxt.arvidw.space')
   res.setHeader("Access-Control-Allow-Origin", 'https://nuxtarvidw.netlify.app')
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000")
+  // res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000")
   // res.setHeader("Access-Control-Allow-Origin", "*")
   res.setHeader(
     "Access-Control-Allow-Methods",
