@@ -70,7 +70,8 @@ exports.newProject = async (req, res, next) => {
 exports.hideProject = async (req, res, next) => {
   try {
     const { id, isHidden } = req.body;
-    projectModel.findByIdAndUpdate(
+    console.log(isHidden)
+    const hiddenProject = projectModel.findOneAndUpdate(
       {
         _id: id
       },
@@ -78,7 +79,11 @@ exports.hideProject = async (req, res, next) => {
         hidden: isHidden
       }
     )
-    
+    if (!hiddenProject) {
+      const error = new Error("project not updated");
+      error.statusCode = 404;
+      throw error;
+    }
     res.status(200).json({
       message: "Project updated"
     });
