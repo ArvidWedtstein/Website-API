@@ -1,7 +1,5 @@
 
-const express = require("express");
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import { Schema, model } from 'mongoose'
 
 const timelineSchema = new Schema(
   {
@@ -25,4 +23,4 @@ const timelineSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("timeline", timelineSchema);
+module.exports = model("timeline", timelineSchema);

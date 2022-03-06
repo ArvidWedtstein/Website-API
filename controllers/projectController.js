@@ -1,20 +1,40 @@
-const bcrypt = require("bcryptjs");
-const userModel = require("../models/userModel");
-const newspostModel = require("../models/newspostModel");
-const printModel = require('../models/printModel');
-const projectModel = require('../models/projectModel');
-const reviewModel = require('../models/reviewModel');
-const timelineModel = require('../models/timelineModel');
-const jwt = require("jsonwebtoken");
-var Binary = require('mongodb').Binary;
-const emailjs = require('emailjs-com');
-const axios = require('axios');
+import axios from 'axios'
+/* MongoDB Model Imports */
+import reviewModel from '../models/reviewModel';
+import timelineModel from '../models/timelineModel';
+import projectModel from '../models/projectModel';
+import printModel from '../models/printModel';
+import newspostModel from '../models/newspostModel'
+import userModel from '../models/userModel'
 
+/**
+ * Creates a new project
+ * @public
+ *
+ * @property {name} name 
+ * @property {description} description
+ * @property {projectLink} projectlink
+ * @property {gitrepo} githubrepository
+ * @property {pain} painamount
+ * 
+ * @returns A new project
+ * @copyright Meg
+ * 
+ * @example
+ * ```js
+ * Data: {
+ *  name: "example",
+ *  description: "example",
+ *  projectlink: "example" (optional),
+ *  gitrepo: "githublink" (optional),
+ *  tags: [smiley] (optional),
+ *  pain: range(1-100) (optional)
+ * }
+ * ```
+ */
 
 exports.newProject = async (req, res, next) => {
   try {
-    //const json = JSON.parse(JSON.parse(JSON.stringify(req.body)).json); 
-    //const { name, description, projectLink, gitrepo, tags, pain } = json;
     const { name, description, projectLink, gitrepo, tags, pain } = req.body;
     const userproject = {
       name: name,
@@ -22,12 +42,12 @@ exports.newProject = async (req, res, next) => {
       tags: tags,
       pain: pain,
     }
-    if (projectLink) {
-      Object.assign(userproject, {projectLink: projectLink});
-    }
-    if (req.file) {
-      Object.assign(userproject, {thumbnail: req.file.path});
-    }
+
+    if (projectLink) Object.assign(userproject, {projectLink: projectLink});
+
+    if (req.file) Object.assign(userproject, {thumbnail: req.file.path});
+
+
     if (gitrepo) {
       axios({
         method: "get",
@@ -49,16 +69,15 @@ exports.newProject = async (req, res, next) => {
           }
           Object.assign(userproject, {language: percent})
           Object.assign(userproject, {github: proj})
-          const project = await new projectModel(userproject);
-          const result = await project.save();
         });
       });
-    } else {
-      const project = await new projectModel(userproject);
-      const result = await project.save();
     }
+    const project = await new projectModel(userproject);
+    const result = await project.save();
+
     res.status(200).json({
-      message: "Project created"
+      message: "Project created",
+      data: result
     });
   } catch (err) {
     console.log(err)
@@ -68,6 +87,7 @@ exports.newProject = async (req, res, next) => {
     next(err);
   }
 }
+
 exports.hideProject = async (req, res, next) => {
   try {
     const { id, isHidden } = req.body;
@@ -80,13 +100,17 @@ exports.hideProject = async (req, res, next) => {
       }
     )
     hiddenProject.save();
+
+
     if (!hiddenProject) {
       const error = new Error("could not hide project");
       error.statusCode = 404;
       throw error;
     }
+
     res.status(200).json({
-      message: "Project updated"
+      message: "Project updated",
+      data: hiddenProject
     });
   } catch (err) {
     console.log(err)
@@ -155,7 +179,8 @@ exports.newRating = async (req, res, next) => {
     
     const result = await reviewDB.save();
     res.status(200).json({
-      message: "Review Created"
+      message: "Review Created",
+      data: result
     });
   } catch (err) {
     if (!err.statusCode) {
@@ -166,11 +191,18 @@ exports.newRating = async (req, res, next) => {
 }
   
 exports.getRatings = async (req, res, next) => {
-  const reviews = await reviewModel.find();
-  //console.log(reviews)
-  res.status(200).json({
-    reviews
-  });
+  try {
+    const reviews = await reviewModel.find();
+
+    res.status(200).json({
+      reviews
+    });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
 }
 
 exports.editRating = async (req, res, next) => {
@@ -197,6 +229,7 @@ exports.editRating = async (req, res, next) => {
       error.statusCode = 404;
       throw error;
     }
+
     res.status(200).json({
       message: "Review Edited Successfully"
     });
@@ -211,19 +244,28 @@ exports.editRating = async (req, res, next) => {
   
 /* 3D print */
 exports.newPrint = async (req, res, next) => {
-  const json = JSON.parse(JSON.parse(JSON.stringify(req.body)).json); 
-  const { name, description, author } = json;
-  const post = new printModel({
-    name: name,
-    description: description,
-    author: author,
-    stl: req.file.path
-  });
-  const result = await post.save();
-  res.status(200).json({
-    message: "Print created",
-    print: { id: result.id, title: result.name, description: result.description },
-  });
+  try {
+    const json = JSON.parse(JSON.parse(JSON.stringify(req.body)).json); 
+    const { name, description, author } = json;
+    const print = new printModel({
+      name: name,
+      description: description,
+      author: author,
+      stl: req.file.path
+    });
+
+    const result = await print.save();
+    res.status(200).json({
+      message: "Print created",
+      print: result,
+    });
+  } catch (err) {
+    console.log(err)
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
 }
 
 
@@ -236,21 +278,44 @@ exports.getPrints = async (req, res, next) => {
 }
 
 exports.getPrint = async (req, res, next) => {
-  const { id } = req.params;
-  const print = await printModel.find({ _id: id });
-  //console.log(prints)
-  res.status(200).json({
-    prints: print
-  });
+  try {
+    const { id } = req.params;
+
+    const print = await printModel.find({ _id: id });
+
+    if (!print) {
+      const error = new Error("print not found!");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    res.status(200).json({
+      prints: print
+    });
+  } catch (err) {
+    console.log(err)
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
 }
 
 /* About Me Page Timeline */
 exports.getTimeline = async (req, res, next) => {
-  const timeline = await timelineModel.find();
-  //console.log(prints)
-  res.status(200).json({
-    timeline: timeline
-  });
+  try {
+    const timeline = await timelineModel.find();
+
+    res.status(200).json({
+      timeline: timeline
+    });
+  } catch (err) {
+    console.log(err)
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
 }
 
 exports.newTimelineEvent = async (req, res, next) => {

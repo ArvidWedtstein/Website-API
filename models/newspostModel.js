@@ -1,7 +1,4 @@
-
-const express = require("express");
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import { Schema, model } from 'mongoose'
 
 const newspostSchema = new Schema(
   {
@@ -37,4 +34,4 @@ const newspostSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Newspost", newspostSchema);
+export default model("Newspost", newspostSchema);

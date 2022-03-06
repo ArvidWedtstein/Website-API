@@ -1,7 +1,4 @@
-
-const express = require("express");
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import { Schema, model } from 'mongoose'
 
 const reviewSchema = new Schema(
   {
@@ -22,4 +19,4 @@ const reviewSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("reviews", reviewSchema);
+export default model("reviews", reviewSchema);

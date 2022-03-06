@@ -1,39 +1,21 @@
+import { Schema, model } from 'mongoose'
 
-const express = require("express");
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
-const reqString = {
-  type: String,
-  required: true
+const yEs = (type, required) => {
+  return {
+    type: type,
+    required: required
+  }
 };
 const projectSchema = new Schema(
   {
-    name: reqString,
-    description: reqString,
-    projectLink: {
-      type: String,
-      required: false
-    },
-    thumbnail: {
-      type: String,
-      required: false
-    },
-    tags: {
-      type: Array,
-      required: false
-    },
-    pain: {
-      type: Number,
-      required: true
-    },
-    language: {
-      type: Array,
-      required: false
-    },
-    github: {
-      type: Object,
-      required: false,
-    },
+    name: yEs(String, true),
+    description: yEs(String, true),
+    projectLink: yEs(String, false),
+    thumbnail: yEs(String, false),
+    tags: yEs(Array, false),
+    pain: yEs(Number, false),
+    language: yEs(Array, false),
+    github: yEs(Object, false),
     hidden: {
       type: Boolean,
       required: false,
@@ -43,4 +25,4 @@ const projectSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("projects", projectSchema);
+export default model("projects", projectSchema);
