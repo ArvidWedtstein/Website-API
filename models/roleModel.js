@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose'
+const { Schema, model } = require('mongoose')
 
 const roleSchema = new Schema(
   {
@@ -22,4 +22,4 @@ const roleSchema = new Schema(
   { timestamps: true }
 );
 
-export default model("roles", roleSchema);
+module.exports = model("roles", roleSchema);

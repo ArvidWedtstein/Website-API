@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose'
+const { Schema, model } = require('mongoose')
 
 const yEs = (type, required) => {
   return {
@@ -25,4 +25,4 @@ const projectSchema = new Schema(
   { timestamps: true }
 );
 
-export default model("projects", projectSchema);
+module.exports = model("projects", projectSchema);

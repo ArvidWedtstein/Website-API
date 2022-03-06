@@ -1,5 +1,5 @@
 
-import { Schema, model } from 'mongoose'
+const { Schema, model } = require('mongoose')
 
 const timelineSchema = new Schema(
   {

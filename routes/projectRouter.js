@@ -1,5 +1,5 @@
-import jwt from 'jsonwebtoken'
-import express from 'express'
+const jwt = require('jsonwebtoken')
+const express = require('express')
 const router = express.Router();
 
 const authenticateMiddleware = (req, res, next) => {
@@ -35,4 +35,4 @@ router.post("/editRating/:id", authenticateMiddleware, projectController.editRat
 router.post("/newTimelineEvent", projectController.newTimelineEvent);
 router.get("/getTimelineEvents", projectController.getTimeline);
 
-export default router;
+module.exports = router;

@@ -1,11 +1,11 @@
-import axios from 'axios'
-/* MongoDB Model Imports */
-import reviewModel from '../models/reviewModel';
-import timelineModel from '../models/timelineModel';
-import projectModel from '../models/projectModel';
-import printModel from '../models/printModel';
-import newspostModel from '../models/newspostModel'
-import userModel from '../models/userModel'
+const axios = require('axios');
+/* MongoDB Model consts */
+const reviewModel = require('../models/reviewModel');
+const timelineModel = require('../models/timelineModel');
+const projectModel = require('../models/projectModel');
+const printModel = require('../models/printModel');
+const newspostModel = require('../models/newspostModel');
+const userModel = require('../models/userModel');
 
 /**
  * Creates a new project
