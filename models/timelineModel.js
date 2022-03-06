@@ -13,12 +13,12 @@ const timelineSchema = new Schema(
       type: String,
       required: true
     },
-    datestart: {
-      type: Date,
+    startdate: {
+      type: String,
       required: true
     },
-    datestart: {
-      type: Date,
+    enddate: {
+      type: String,
       required: true
     }
   },

@@ -66,7 +66,7 @@ mongoose.connect(MONGOOSE_URI).then((result) => {
 }).catch((err) => console.log(err));
 mongoose.Promise = global.Promise;
 
-console.log(app.stack)
+console.log('API is now (barely) running')
 
 /* Email */
 // https://dashboard.emailjs.com/admin

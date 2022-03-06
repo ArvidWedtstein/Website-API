@@ -4,6 +4,7 @@ const newspostModel = require("../models/newspostModel");
 const printModel = require('../models/printModel');
 const projectModel = require('../models/projectModel');
 const reviewModel = require('../models/reviewModel');
+const timelineModel = require('../models/timelineModel');
 const jwt = require("jsonwebtoken");
 var Binary = require('mongodb').Binary;
 const emailjs = require('emailjs-com');
@@ -241,4 +242,36 @@ exports.getPrint = async (req, res, next) => {
   res.status(200).json({
     prints: print
   });
+}
+
+/* About Me Page Timeline */
+exports.getTimeline = async (req, res, next) => {
+  const timeline = await timelineModel.find();
+  //console.log(prints)
+  res.status(200).json({
+    timeline: timeline
+  });
+}
+
+exports.newTimelineEvent = async (req, res, next) => {
+  try {
+    const { name, description, startdate, enddate } = req.body;
+    const newtimelineevent = new timelineModel({
+      name,
+      description,
+      startdate,
+      enddate
+    });
+    
+    const result = await newtimelineevent.save();
+    res.status(200).json({
+      message: "Timeline Event Created",
+      timeline: result
+    });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
 }
