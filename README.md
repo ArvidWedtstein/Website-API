@@ -1,6 +1,6 @@
 # Website API
 
-![Languages](https://arvidgithubembed.herokuapp.com/skills?languages=javascript,typescript,express,php&backgroundcolor=0D1117&title=Languages%20used%20im%20this%20project&titlecolor=ffffff&textcolor=000000&boxcolor=c6bcbc&bordercolor=0D1117)
+![Languages](https://arvidgithubembed.herokuapp.com/skills?languages=javascript,typescript,express&backgroundcolor=0D1117&title=Languages%20used%20im%20this%20project&titlecolor=ffffff&textcolor=000000&boxcolor=c6bcbc&bordercolor=0D1117)
 
 Content
 |Controller|Router|Description|
