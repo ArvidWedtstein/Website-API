@@ -59,9 +59,9 @@ var MONGOOSE_URI = process.env.MONGODB_URL;
 if (MONGOOSE_URI) {
     mongoose.connect(MONGOOSE_URI).then(function (result) {
         app.listen(process.env.PORT || 8080);
-    })["catch"](function (err) { return console.log(err); });
+    }).catch((err) => { return console.log(err); });
     mongoose.Promise = global.Promise;
 }
-console.log('API is now (barely) running');
+console.log(`API is now (barely) running on localhost:${process.env.PORT || 8080}`);
 /* Email */
 // https://dashboard.emailjs.com/admin

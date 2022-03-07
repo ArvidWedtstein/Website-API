@@ -15,6 +15,9 @@ const upload = multer({
   limits: {fileSize: 1024*1024*5}
 });
 
+router.get("/", (req, res, next) => {
+  res.status(200).json(router.stack);
+});
 
 router.post("/newspost", newsController.newspost);
 // router.post("/newspost", upload.single("image"), newsController.newspost);

@@ -30,6 +30,11 @@ const authenticateMiddleware = (req, res, next) => {
   })
 };
 
+router.get("/", (req, res, next) => {
+  res.status(200).json(router.stack);
+});
+
+
 router.post("/signin", authController.postSignin);
 router.post("/login", authController.postLogin);
 router.post("/verificationcode", authController.verificationcode);

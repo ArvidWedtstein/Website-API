@@ -33,6 +33,8 @@ const userModel = require('../models/userModel');
  * ```
  */
 
+
+
 exports.newProject = async (req, res, next) => {
   try {
     const { name, description, projectLink, gitrepo, tags, pain } = req.body;
@@ -305,6 +307,12 @@ exports.getPrint = async (req, res, next) => {
 exports.getTimeline = async (req, res, next) => {
   try {
     const timeline = await timelineModel.find();
+
+    if (!timeline) {
+      res.status(204).json({
+        message: "Could not find timeline Events"
+      });
+    }
 
     res.status(200).json({
       timeline: timeline

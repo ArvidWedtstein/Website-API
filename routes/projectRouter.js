@@ -16,6 +16,9 @@ const authenticateMiddleware = (req, res, next) => {
 
 const projectController = require("../controllers/projectController");
 
+router.get("/", (req, res, next) => {
+  res.status(200).json(router.stack);
+});
 
 router.post("/newProject", projectController.newProject);
 router.get("/getProjects", projectController.getProjects);
