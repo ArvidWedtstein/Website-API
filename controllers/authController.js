@@ -145,8 +145,7 @@ exports.postLogin = async (req, res, next) => {
 
 exports.postLogout = async (req, res, next) => {
   try {
-    const token = req.
-    jwt.decode()
+
     res.status(200).json({ message: 'signed out' });
   } catch (err) {
     if (!err.statusCode) {
