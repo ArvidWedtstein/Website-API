@@ -37,6 +37,7 @@ router.get("/", (req, res, next) => {
 
 router.post("/signin", authController.postSignin);
 router.post("/login", authController.postLogin);
+router.post("/logout", authController.postLogout);
 router.post("/verificationcode", authController.verificationcode);
 router.get("/getAllUserData/:id", authenticateMiddleware, authController.getAllUserData);
 router.delete("/deleteAllUserData:/id", authenticateMiddleware, authController.deleteAllUserData);

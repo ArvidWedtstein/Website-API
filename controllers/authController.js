@@ -6,13 +6,11 @@ const projectModel = require('../models/projectModel');
 const reviewModel = require("../models/reviewModel");
 const roleModel = require("../models/roleModel");
 const jwt = require("jsonwebtoken");
-const fs = require('fs');
-var mongodb, { Binary, MongoClient } = require('mongodb');
-const mongoose = require('mongoose');
-const emailjs = require('emailjs-com');
 require('dotenv').config()
 const axios = require('axios');
 const ObjectId = require('mongodb').ObjectId;
+
+
 const perm = {
   CREATE_POST: "CREATE_POST",
   DELETE_POST: "DELETE_POST",
@@ -137,6 +135,19 @@ exports.postLogin = async (req, res, next) => {
       expiresIn: "20m",
     });
     res.status(200).json({ token: token, message: "Successfully logged in", user });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};
+
+exports.postLogout = async (req, res, next) => {
+  try {
+    const token = req.
+    jwt.decode()
+    res.status(200).json({ message: 'signed out' });
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
@@ -419,16 +430,6 @@ exports.getRoles = async (req, res, next) => {
 }
 
 
-exports.postLogout = async (req, res, next) => {
-  try {
-    res.status(200).json({ message: 'signed out' });
-  } catch (err) {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-    next(err);
-  }
-};
 
 
 exports.getUserId = async (req, res, next) => {
