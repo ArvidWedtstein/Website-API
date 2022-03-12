@@ -1,0 +1,8 @@
+type User {
+    id: String!
+    email: String!
+    password: String!
+    role: String!
+    profileImg: String
+    banned: Boolean
+}

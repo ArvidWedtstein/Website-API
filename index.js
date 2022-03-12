@@ -1,21 +1,46 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 const express = require("express");
+const { graphqlHTTP } = require("express-graphql");
 const bodyParser = require("body-parser");
-var cors = require('cors')
-var helmet = require('helmet')
+const authfields = require('./graphql/graphQLAuthRouter');
+const newsfields = require('./graphql/graphQLNewsRouter');
+var cors = require('cors');
+var helmet = require('helmet');
+const {
+  GraphQLSchema,
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLList,
+  GraphQLBoolean,
+  GraphQLInt,
+  GraphQLNonNull
+} = require('graphql');
 
 require('dotenv').config();
 
-
-// routes
+// Routes
 const authRouter = require("./routes/authRouter");
 const projectRouter = require("./routes/projectRouter");
 const newsRouter = require("./routes/newsRouter");
 
 const app = express();
-app.use(helmet())
+
+const Schema = new GraphQLSchema({
+  description: "Schema",
+  query: new GraphQLObjectType({
+    name: "Query",
+    description: "Root Query",
+    fields: { ...authfields, ...newsfields }
+  })
+})
+app.use('/api/graphql', graphqlHTTP({
+  schema: Schema,
+  graphiql: true
+}));
+
+app.use(helmet());
 app.use(bodyParser.json());
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static('uploads'));
 
 var allowlist = ["https://nuxtarvidw.netlify.app", "http://localhost:3000"]
@@ -41,10 +66,12 @@ app.use((req, res, next) => {
 //app.use(authenticateMiddleware);
 
 
+
 // Router //
 app.use("/api/auth", authRouter);
 app.use("/api/project", projectRouter);
 app.use("/api/news", newsRouter);
+
 
 
 app.use((error, req, res, next) => {
