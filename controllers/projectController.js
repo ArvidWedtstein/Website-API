@@ -161,10 +161,11 @@ exports.getProjects = async (req, res, next) => {
           error.statusCode = 404;
           throw error;
         }
+        project = projectupdate;
       }
     })
   })
-  projects = await projectModel.find();
+  // projects = await projectModel.find();
   res.status(200).json({
     projects: projects
   });

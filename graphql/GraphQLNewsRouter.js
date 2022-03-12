@@ -1,6 +1,6 @@
 const { graphqlHTTP } = require("express-graphql");
-const { RoleType } = require('../graphql/Types')
-const roleModel = require("../models/roleModel");
+const { NewspostType } = require('../graphql/Types')
+const newspostModel = require("../models/newspostModel");
 const {
   GraphQLSchema,
   GraphQLObjectType,
@@ -13,15 +13,20 @@ const {
 
 
 module.exports = {
-  news: {
-    type: RoleType,
-    description: "A Single Role",
+  newspost: {
+    type: NewspostType,
+    description: "A Single News Post",
     args: {
       _id: { type: GraphQLString },
     },
     resolve: (async (parent, args) => {
-      const roleData = await roleModel.find({ _id: args._id })
-      return roleData[0]
+      const newspostData = await newspostModel.find({ _id: args._id })
+      return newspostData[0]
     })
+  },
+  newsposts: {
+    type: GraphQLList(NewspostType),
+    description: "Returns all news posts",
+    resolve: (async () => await newspostModel.find())
   }
 }

@@ -2,18 +2,14 @@ const mongoose = require('mongoose');
 const express = require("express");
 const { graphqlHTTP } = require("express-graphql");
 const bodyParser = require("body-parser");
-const authfields = require('./graphql/graphQLAuthRouter');
+const authfields = require('./graphql/GraphQLAuthRouter');
 const newsfields = require('./graphql/graphQLNewsRouter');
+const projectfields = require('./graphql/graphQLProjectRouter');
 var cors = require('cors');
 var helmet = require('helmet');
 const {
   GraphQLSchema,
   GraphQLObjectType,
-  GraphQLString,
-  GraphQLList,
-  GraphQLBoolean,
-  GraphQLInt,
-  GraphQLNonNull
 } = require('graphql');
 
 require('dotenv').config();
@@ -30,7 +26,7 @@ const Schema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: "Query",
     description: "Root Query",
-    fields: { ...authfields, ...newsfields }
+    fields: { ...authfields, ...newsfields, ...projectfields }
   })
 })
 app.use('/api/graphql', graphqlHTTP({

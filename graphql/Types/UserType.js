@@ -34,4 +34,3 @@ module.exports = new GraphQLObjectType({
     updatedAt: { type: GraphQLNonNull(GraphQLString) }
   })
 })
-

@@ -27,8 +27,8 @@ const newspostSchema = new Schema(
       required: false,
     },
     reactions: {
-        type: Object,
-        required: false
+      type: Object,
+      required: false
     }
   },
   { timestamps: true }
