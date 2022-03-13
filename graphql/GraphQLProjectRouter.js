@@ -130,7 +130,6 @@ module.exports = {
         thumbnail: { type: GraphQLString, description: "Image to the Project" },
         tags: { type: GraphQLList(GraphQLString), description: "Tags to the Project" },
         pain: { type: GraphQLInt, description: "Amount of pain" },
-        languages: { type: GraphQLList(LanguageType), description: "Languages in the Project" },
         hidden: { type: GraphQLBoolean },
       },
       resolve: (async (parent, args) => {

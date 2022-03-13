@@ -38,7 +38,7 @@ module.exports = {
       args: {
         title: { type: GraphQLNonNull(GraphQLString), description: "Title of the news post" },
         description: { type: GraphQLNonNull(GraphQLString), description: "Description of the news post" },
-        author: { type: GraphQLNonNull(UserType), description: "Author of the news post" },
+        author: { type: GraphQLNonNull(GraphQLString), description: "Author of the news post" },
         sectionBlocks: { type: GraphQLString, description: "SectionBlocks of the post" },
         image: { type: GraphQLString, description: "Image of the news post?!" },
         tags: { type: GraphQLList(GraphQLString), description: "Tags for the news post" },
