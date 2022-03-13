@@ -1,8 +1,12 @@
 const { graphqlHTTP } = require("express-graphql");
+/* MongoDB Models */
 const userModel = require("../models/userModel");
 const projectModel = require("../models/projectModel");
 const reviewModel = require("../models/reviewModel");
 const timelineModel = require("../models/timelineModel");
+/* Services */
+const projectService = require('../services/projectService')
+
 const axios = require('axios');
 const { RoleType, UserType, ProjectType, PrintType, TimelineType, RatingType, LanguageType } = require('./Types/index')
 const {
@@ -33,6 +37,8 @@ module.exports = {
       description: "List of all projects",
       resolve: (async () => {
         let projects = await projectModel.find();
+
+        /* Implement GraphQL to only get necessary data from github */
         axios({
           method: "get",
           url: "https://api.github.com/users/ArvidWedtstein/repos"
@@ -129,43 +135,8 @@ module.exports = {
       },
       resolve: (async (parent, args) => {
         const { name, description, projectLink, github, tags, pain } = args;
-        const userproject = {
-          name: name,
-          description: description,
-          tags: tags,
-          pain: pain,
-        }
 
-        if (projectLink) Object.assign(userproject, {projectLink: projectLink});
-
-        if (args.thumbnail) Object.assign(userproject, {thumbnail: args.thumbnail});
-        /* Add GraphQL to only get the necessary data from github */
-        if (github) {
-          axios({
-            method: "get",
-            url: "https://api.github.com/users/ArvidWedtstein/repos"
-          }).then(async (gitres) => {
-            let proj = gitres.data.find(proje => proje.html_url === github)
-            await axios({
-              method: "get",
-              url: proj.languages_url
-            }).then(async (langres) => {
-              let lang = await langres.data;
-              const sumValues = lang => Object.values(lang).reduce((a, b) => a + b);
-              const percentage = (partialValue, totalValue) => {
-                return (100 * partialValue) / totalValue;
-              } 
-              let percent = []
-              for (const language in lang) {
-                percent.push({ "name": language, "percent": Math.round(percentage(lang[language], sumValues(lang)) * 100) / 100})
-              }
-              Object.assign(userproject, {language: percent})
-              Object.assign(userproject, {github: proj})
-            });
-          });
-        }
-        const project = await new projectModel(userproject);
-        const result = await project.save();
+        const result = await projectService.newProject(name, description, projectLink, github, tags, pain, args.thumbnail)
 
         return result;
       })
