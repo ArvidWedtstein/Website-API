@@ -1,5 +1,12 @@
 const axios = require('axios');
-const projectModel = require("../models/projectModel");
+
+/* MongoDB Models */
+const reviewModel = require('../models/reviewModel');
+const timelineModel = require('../models/timelineModel');
+const projectModel = require('../models/projectModel');
+const printModel = require('../models/printModel');
+const newspostModel = require('../models/newspostModel');
+const userModel = require('../models/userModel');
 
 exports.newProject = async (name, description, projectLink, gitrepo, tags, pain, thumbnail) => {
   const userproject = {
@@ -83,4 +90,16 @@ exports.getProjects = async () => {
   })
 
   return projects
+}
+
+exports.newTimelineEvent = (name, description, startdate, enddate) => {
+  const newtimelineevent = new timelineModel({
+    name,
+    description,
+    startdate,
+    enddate
+  });
+  
+  const result = await newtimelineevent.save();
+  return result;
 }

@@ -221,9 +221,6 @@ exports.newPrint = async (req, res, next) => {
   }
 }
 
-
-
-
 exports.getPrint = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -282,14 +279,9 @@ exports.getTimeline = async (req, res, next) => {
 exports.newTimelineEvent = async (req, res, next) => {
   try {
     const { name, description, startdate, enddate } = req.body;
-    const newtimelineevent = new timelineModel({
-      name,
-      description,
-      startdate,
-      enddate
-    });
+
+    const result = await projectService.newTimelineEvent(name, description, startdate, enddate);
     
-    const result = await newtimelineevent.save();
     res.status(200).json({
       message: "Timeline Event Created",
       timeline: result

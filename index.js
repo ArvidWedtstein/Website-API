@@ -21,6 +21,7 @@ const newsRouter = require("./routes/newsRouter");
 
 const app = express();
 
+/* GraphQL */
 const Schema = new GraphQLSchema({
   description: "Schema",
   query: new GraphQLObjectType({
@@ -39,6 +40,7 @@ app.use('/api/graphql', graphqlHTTP({
   graphiql: true
 }));
 
+/* REST */
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
@@ -55,43 +57,43 @@ var corsOptionsDelegate = function (req, callback) {
   }
   callback(null, corsOptions) // callback expects two parameters: error and options
 }
-// app.use(cors(corsOptionsDelegate));
+
+/* Enable CORS */
+app.use(cors(corsOptionsDelegate));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", 'https://nuxtarvidw.netlify.app')
-  // res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000")
   res.setHeader(
     "Access-Control-Allow-Methods",
     "OPTIONS, GET, POST, PUT, PATCH, DELETE"
   );
   next();
 });
+
+/* Auth every request */
 //app.use(authenticateMiddleware);
-
-
 
 // Router //
 app.use("/api/auth", authRouter);
 app.use("/api/project", projectRouter);
 app.use("/api/news", newsRouter);
 
-
-
+/* Error Handling */ 
 app.use((error, req, res, next) => {
-    console.log(error.message);
-    const status = error.statusCode || 500;
-    const message = error.message;
-    const data = error.data;
-    res.status(status).json({ message: message, data: data });
-  });
-// Connect to MongoDB
+  console.log(error.message);
+  const status = error.statusCode || 500;
+  const message = error.message;
+  const data = error.data;
+  res.status(status).json({ message: message, data: data });
+});
+
+/* Connect to MongoDB Database */
 var MONGOOSE_URI = process.env.MONGODB_URL;
-if (MONGOOSE_URI) {
-    mongoose.connect(MONGOOSE_URI).then(function (result) {
-        app.listen(process.env.PORT || 8080);
-    }).catch((err) => { return console.log(err); });
-    mongoose.Promise = global.Promise;
-}
-console.log(`API is now (barely) running on localhost:${process.env.PORT || 8080}`);
-/* Email */
-// https://dashboard.emailjs.com/admin
+if (!MONGOOSE_URI) console.error("404 - MongoDB URI not found.\nCheck .env variables")
+
+mongoose.connect(MONGOOSE_URI).then(function (result) {
+  app.listen(process.env.PORT);
+}).catch((err) => { return console.log(err); });
+mongoose.Promise = global.Promise;
+
+console.log(`API is now (barely) running on localhost:${process.env.PORT}`);
