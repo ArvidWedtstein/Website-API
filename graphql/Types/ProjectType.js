@@ -9,15 +9,8 @@ const {
   GraphQLFloat
 } = require('graphql');
 const RoleType = require('./RoleType')
+const LanguageType = require('./LanguageType')
 const roleModel = require('../../models/roleModel')
-const languageType = new GraphQLObjectType({
-  name: "Language",
-  description: "Language",
-  fields: () => ({
-    name: { type: GraphQLString },
-    percent: { type: GraphQLFloat }
-  })
-})
 module.exports = new GraphQLObjectType({
   name: "Project",
   description: "This represents a Project",
@@ -26,10 +19,11 @@ module.exports = new GraphQLObjectType({
     name: { type: GraphQLNonNull(GraphQLString) },
     description: { type: GraphQLNonNull(GraphQLString) },
     projectLink: { type: GraphQLString },
+    github: { type: GraphQLList(GraphQLString) },
     thumbnail: { type: GraphQLString },
     tags: { type: GraphQLList(GraphQLString) },
     pain: { type: GraphQLInt },
-    language: { type: GraphQLList(languageType) },
+    language: { type: GraphQLList(LanguageType) },
     hidden: { type: GraphQLBoolean },
     createdAt: { type: GraphQLNonNull(GraphQLString) },
     updatedAt: { type: GraphQLNonNull(GraphQLString) }

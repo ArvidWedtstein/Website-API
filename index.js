@@ -3,8 +3,8 @@ const express = require("express");
 const { graphqlHTTP } = require("express-graphql");
 const bodyParser = require("body-parser");
 const authfields = require('./graphql/GraphQLAuthRouter');
-const newsfields = require('./graphql/graphQLNewsRouter');
-const projectfields = require('./graphql/graphQLProjectRouter');
+const newsfields = require('./graphql/GraphQLNewsRouter');
+const projectfields = require('./graphql/GraphQLProjectRouter');
 var cors = require('cors');
 var helmet = require('helmet');
 const {
@@ -26,7 +26,12 @@ const Schema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: "Query",
     description: "Root Query",
-    fields: { ...authfields, ...newsfields, ...projectfields }
+    fields: { ...authfields.get, ...newsfields.get, ...projectfields.get }
+  }),
+  mutation: new GraphQLObjectType({
+    name: "Mutation",
+    description: "Root Mutation",
+    fields: { ...authfields.mutation, ...newsfields.mutation, ...projectfields.mutation }
   })
 })
 app.use('/api/graphql', graphqlHTTP({
@@ -50,6 +55,7 @@ var corsOptionsDelegate = function (req, callback) {
   callback(null, corsOptions) // callback expects two parameters: error and options
 }
 app.use(cors(corsOptionsDelegate));
+
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", 'https://nuxtarvidw.netlify.app')
   // res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000")

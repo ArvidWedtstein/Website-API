@@ -1,81 +1,57 @@
 const axios = require('axios');
-/* MongoDB Model consts */
+/* MongoDB Models */
 const reviewModel = require('../models/reviewModel');
 const timelineModel = require('../models/timelineModel');
 const projectModel = require('../models/projectModel');
 const printModel = require('../models/printModel');
 const newspostModel = require('../models/newspostModel');
 const userModel = require('../models/userModel');
-
-/**
- * Creates a new project
- * @public
- *
- * @property {name} name 
- * @property {description} description
- * @property {projectLink} projectlink
- * @property {gitrepo} githubrepository
- * @property {pain} painamount
- * 
- * @returns A new project
- * @copyright Meg
- * 
- * @example
- * ```js
- * Data: {
- *  name: "example",
- *  description: "example",
- *  projectlink: "example" (optional),
- *  gitrepo: "githublink" (optional),
- *  tags: [smiley] (optional),
- *  pain: range(1-100) (optional)
- * }
- * ```
- */
-
-
+/* Services */
+const projectService = require('../services/projectService');
 
 exports.newProject = async (req, res, next) => {
   try {
     const { name, description, projectLink, gitrepo, tags, pain } = req.body;
-    const userproject = {
-      name: name,
-      description: description,
-      tags: tags,
-      pain: pain,
-    }
 
-    if (projectLink) Object.assign(userproject, {projectLink: projectLink});
+    const result = projectService.newProject(name, description, projectLink, gitrepo, tags, pain, req.file)
+    // const userproject = {
+    //   name: name,
+    //   description: description,
+    //   tags: tags,
+    //   pain: pain,
+    // }
 
-    if (req.file) Object.assign(userproject, {thumbnail: req.file.path});
+    // if (projectLink) Object.assign(userproject, {projectLink: projectLink});
+
+    // if (req.file) Object.assign(userproject, {thumbnail: req.file.path});
 
 
-    if (gitrepo) {
-      axios({
-        method: "get",
-        url: "https://api.github.com/users/ArvidWedtstein/repos"
-      }).then(async (gitres) => {
-        let proj = gitres.data.find(proje => proje.html_url === gitrepo)
-        await axios({
-          method: "get",
-          url: proj.languages_url
-        }).then(async (langres) => {
-          let lang = await langres.data;
-          const sumValues = lang => Object.values(lang).reduce((a, b) => a + b);
-          const percentage = (partialValue, totalValue) => {
-            return (100 * partialValue) / totalValue;
-          } 
-          let percent = []
-          for (const language in lang) {
-            percent.push({ "name": language, "percent": Math.round(percentage(lang[language], sumValues(lang)) * 100) / 100})
-          }
-          Object.assign(userproject, {language: percent})
-          Object.assign(userproject, {github: proj})
-        });
-      });
-    }
-    const project = await new projectModel(userproject);
-    const result = await project.save();
+    // if (gitrepo) {
+    //   axios({
+    //     method: "get",
+    //     url: "https://api.github.com/users/ArvidWedtstein/repos"
+    //   }).then(async (gitres) => {
+    //     let proj = gitres.data.find(proje => proje.html_url === gitrepo)
+    //     await axios({
+    //       method: "get",
+    //       url: proj.languages_url
+    //     }).then(async (langres) => {
+    //       let lang = await langres.data;
+    //       const sumValues = lang => Object.values(lang).reduce((a, b) => a + b);
+    //       const percentage = (partialValue, totalValue) => {
+    //         return (100 * partialValue) / totalValue;
+    //       } 
+    //       let percent = []
+    //       for (const language in lang) {
+    //         percent.push({ "name": language, "percent": Math.round(percentage(lang[language], sumValues(lang)) * 100) / 100})
+    //       }
+    //       Object.assign(userproject, {language: percent})
+    //       Object.assign(userproject, {github: proj})
+    //     });
+    //   });
+    // }
+    // const project = await new projectModel(userproject);
+    // const result = await project.save();
 
     res.status(200).json({
       message: "Project created",

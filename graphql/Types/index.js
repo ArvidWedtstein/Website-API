@@ -5,6 +5,7 @@ const PrintType = require('./PrintType');
 const RatingType = require('./RatingType');
 const TimelineType = require('./TimelineType');
 const NewspostType = require('./NewspostType');
+const LanguageType = require('./LanguageType');
 
 module.exports = {
     RoleType,
@@ -13,5 +14,6 @@ module.exports = {
     ProjectType,
     RatingType,
     TimelineType,
-    NewspostType
+    NewspostType,
+    LanguageType
 }

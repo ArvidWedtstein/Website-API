@@ -62,16 +62,6 @@ let verificationcode;
 exports.postSignin = async (req, res, next) => {
   const { name, email, password } = req.body;
   try {
-    /*if (verification != verification) {
-      const error = new Error(
-        "Verification token invalid"
-      );
-      res.status(409).json({
-        error: "Verification token invalid/does not match",
-      });
-      error.statusCode = 409;
-      throw error;
-    }*/
     const existUser = await userModel.findOne({ email: email });
     if (existUser) {
       const error = new Error(
@@ -383,7 +373,6 @@ exports.unbanUser = async (req, res, next) => {
   }
 }
 /* Roles */
-
 exports.newRole = async (req, res, next) => {
   try {
     const { name, icon, color, permissions } = req.body;
@@ -420,16 +409,12 @@ exports.getRole = async (req, res, next) => {
     next(err);
   }
 }
-
 exports.getRoles = async (req, res, next) => {
   const roles = await roleModel.find();
   res.status(200).json({
     roles: roles
   });
 }
-
-
-
 
 exports.getUserId = async (req, res, next) => {
   const { id } = req.params;

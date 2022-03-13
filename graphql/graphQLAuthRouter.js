@@ -13,36 +13,61 @@ const {
 } = require('graphql');
 
 module.exports = {
-  user: {
-    type: UserType,
-    description: "A Single User",
-    args: {
-      _id: { type: GraphQLString }
+  get: {
+    user: {
+      type: UserType,
+      description: "A Single User",
+      args: {
+        _id: { type: GraphQLString }
+      },
+      resolve: (async (parent, args) => {
+        const user = await userModel.find({ _id: args._id })
+        return user[0]
+      })
     },
-    resolve: (async (parent, args) => {
-      const user = await userModel.find({ _id: args._id })
-      return user[0]
-    })
-  },
-  users: {
-    type: new GraphQLList(UserType),
-    description: "List of all users",
-    resolve: () => userModel.find()
-  },
-  role: {
-    type: RoleType,
-    description: "A Single Role",
-    args: {
-      _id: { type: GraphQLString },
+    users: {
+      type: new GraphQLList(UserType),
+      description: "List of all users",
+      resolve: () => userModel.find()
     },
-    resolve: (async (parent, args) => {
-      const roleData = await roleModel.find({ _id: args._id })
-      return roleData[0]
-    })
+    role: {
+      type: RoleType,
+      description: "A Single Role",
+      args: {
+        _id: { type: GraphQLString },
+      },
+      resolve: (async (parent, args) => {
+        const roleData = await roleModel.find({ _id: args._id })
+        return roleData[0]
+      })
+    },
+    roles: {
+      type: new GraphQLList(RoleType),
+      description: "List of all roles",
+      resolve: () => roleModel.find()
+    },
   },
-  roles: {
-    type: new GraphQLList(RoleType),
-    description: "List of all roles",
-    resolve: () => roleModel.find()
-  },
+  mutation: {
+    newrole: {
+      type: RoleType,
+      description: "Create a new role",
+      args: {
+        name: { type: GraphQLNonNull(GraphQLString), description: "Name of the Role" },
+        icon: { type: GraphQLNonNull(GraphQLString), description: "Icon of the Role" },
+        color: { type: GraphQLNonNull(GraphQLString), description: "Color of the Role" },
+        permissions: { type: GraphQLList(GraphQLString), description: "Permissions of the Role" },
+      },
+      resolve: (async (parent, args) => {
+        const { name, icon, color, permissions } = args;
+        const role = new roleModel({
+          name: name,
+          icon: icon,
+          color: color,
+          permissions: permissions
+        });
+        const result = await role.save();
+        return result;
+      })
+    }
+  }
 }
