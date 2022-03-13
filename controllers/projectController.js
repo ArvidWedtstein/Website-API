@@ -222,13 +222,7 @@ exports.newPrint = async (req, res, next) => {
 }
 
 
-exports.getPrints = async (req, res, next) => {
-  const prints = await printModel.find();
-  //console.log(prints)
-  res.status(200).json({
-    prints: prints
-  });
-}
+
 
 exports.getPrint = async (req, res, next) => {
   try {
@@ -252,6 +246,14 @@ exports.getPrint = async (req, res, next) => {
     }
     next(err);
   }
+}
+
+exports.getPrints = async (req, res, next) => {
+  const prints = await printModel.find();
+  //console.log(prints)
+  res.status(200).json({
+    prints: prints
+  });
 }
 
 /* About Me Page Timeline */
