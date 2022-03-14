@@ -92,7 +92,7 @@ exports.getProjects = async () => {
   return projects
 }
 
-exports.newTimelineEvent = (name, description, startdate, enddate) => {
+exports.newTimelineEvent = async (name, description, startdate, enddate) => {
   const newtimelineevent = new timelineModel({
     name,
     description,
