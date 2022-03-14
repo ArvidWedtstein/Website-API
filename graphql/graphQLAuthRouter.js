@@ -28,7 +28,7 @@ module.exports = {
     users: {
       type: new GraphQLList(UserType),
       description: "List of all users",
-      resolve: () => userModel.find()
+      resolve: async () => await userModel.find()
     },
     role: {
       type: RoleType,
@@ -44,7 +44,7 @@ module.exports = {
     roles: {
       type: new GraphQLList(RoleType),
       description: "List of all roles",
-      resolve: () => roleModel.find()
+      resolve: async () => await roleModel.find()
     },
   },
   mutation: {
