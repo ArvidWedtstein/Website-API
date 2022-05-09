@@ -22,3 +22,5 @@ Content
 |AuthController|AuthRouter|Login, Register|
 |ProjectController|ProjectRouter|Projects, 3D print|
 |NewsController|NewsRouter|BlogPosts|
+
+Run with: `node .`

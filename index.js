@@ -47,7 +47,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static('uploads'));
 app.use('/favicon.ico', express.static('favicon.ico'));
 
-var allowlist = ["https://nuxtarvidw.netlify.app", "http://localhost:3000"]
+var allowlist = [
+  "http://localhost:3000",
+  "https://nuxtarvidw.netlify.app", 
+]
 var corsOptionsDelegate = function (req, callback) {
   var corsOptions;
   if (allowlist.indexOf(req.header('Origin')) !== -1) {
@@ -62,7 +65,7 @@ var corsOptionsDelegate = function (req, callback) {
 app.use(cors(corsOptionsDelegate));
 
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", 'https://nuxtarvidw.netlify.app')
+  // res.setHeader("Access-Control-Allow-Origin", 'https://nuxtarvidw.netlify.app')
   res.setHeader(
     "Access-Control-Allow-Methods",
     "OPTIONS, GET, POST, PUT, PATCH, DELETE"
