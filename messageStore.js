@@ -1,4 +1,4 @@
-// const messageSchema = require('./models/messageModel');
+const messageSchema = require('./models/messageModel');
 // /* abstract */ class MessageStore {
 //     saveMessage(message) {}
 //     findMessagesForUser(userID) {}
@@ -91,6 +91,7 @@ class RedisMessageStore extends MessageStore {
   }
 
   saveMessage(message) {
+    console.log('savemessage', message)
     const value = JSON.stringify(message);
     this.redisClient
       .multi()
@@ -101,17 +102,36 @@ class RedisMessageStore extends MessageStore {
       .exec();
   }
 
+
+  saveMessage2(message) {
+    console.log('savemessage', message)
+    const value = JSON.stringify(message);
+    
+    console.log(message, value)
+    new messageSchema({
+      from: message.from,
+      to: message.to,
+      content: value.content
+    }).save()
+  }
+
   async findMessagesForUser(userID) {
-    console.log("findmessagesforuser", await this.redisClient
-      .lrange(`messages:${userID}`, 0, -1)
-      .then((results) => {
-        return results.map((result) => JSON.parse(result));
-      }))
+    console.log("findmessagesforuser", userID)
     return this.redisClient
       .lrange(`messages:${userID}`, 0, -1)
       .then((results) => {
         return results.map((result) => JSON.parse(result));
       });
+  }
+  
+  async findMessagesForUser2(userID) {
+    console.log("findmessagesforuser", userID)
+    let res = await messageSchema.find({
+      from: userID
+    })
+    console.log('res', res)
+    return res.map((result) => JSON.parse(result));
+
   }
 }
 

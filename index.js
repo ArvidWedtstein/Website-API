@@ -85,7 +85,7 @@ app.use("/api/news", newsRouter);
 
 /* Error Handling */ 
 app.use((error, req, res, next) => {
-  console.log(error.message);
+  console.error("ERR: ", error.message);
   const status = error.statusCode || 500;
   const message = error.message;
   const data = error.data;
@@ -175,6 +175,7 @@ io.on("connection", async (socket) => {
 
   // fetch existing users
   const users = [];
+
   const [messages, sessions] = await Promise.all([
     messageStore.findMessagesForUser(socket.userID),
     sessionStore.findAllSessions(),
@@ -236,7 +237,7 @@ io.on("connection", async (socket) => {
   });
 });
 
-setupWorker(io);
+// setupWorker(io);
 
 
 const PORT = 42069;

@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose')
 const sessionSchema = new Schema(
   {
-    id: {
+    session: {
       type: String,
       required: false,
     },
