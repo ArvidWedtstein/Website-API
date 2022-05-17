@@ -64,30 +64,35 @@ exports.deleteProject = async (id) => {
 exports.getProjects = async () => {
   let projects = await projectModel.find();
 
-  axios({
-    method: "get",
-    url: "https://api.github.com/users/ArvidWedtstein/repos"
-  }).then(async (gitres) => {
-    projects.forEach (async (project) => {
-      if (project.github) {
-        let proj = gitres.data.find(proje => proje.url === project.github.url)
-        const projectupdate = await projectModel.findOneAndUpdate(
-          {
-            _id: project.id,
-          },
-          {
-            github: proj
-          }
-        )
-        if (!projectupdate) {
-          const error = new Error("project not found!");
-          error.statusCode = 404;
-          throw error;
-        }
-        project = projectupdate;
-      }
-    })
-  })
+  // try {
+  //   axios({
+  //     method: "get",
+  //     url: "https://api.github.com/users/ArvidWedtstein/repos"
+  //   }).then(async (gitres) => {
+  //     projects.forEach (async (project) => {
+  //       if (project.github) {
+  //         let proj = gitres.data.find(proje => proje.url === project.github.url)
+  //         const projectupdate = await projectModel.findOneAndUpdate(
+  //           {
+  //             _id: project.id,
+  //           },
+  //           {
+  //             github: proj
+  //           }
+  //         )
+  //         if (!projectupdate) {
+  //           const error = new Error("project not found!");
+  //           error.statusCode = 404;
+  //           throw error;
+  //         }
+  //         project = projectupdate;
+  //       }
+  //     })
+  //   })
+  // } catch (err) {
+  //   console.log(err)
+  // }
+  
 
   return projects
 }

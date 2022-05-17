@@ -460,7 +460,7 @@ exports.getUser = async (req, res, next) => {
         },
       });
     } else {
-      const error = new Error("invalid uid");
+      const error = new Error("no user logged in");
       error.statusCode = 404;
       throw error;
     }
