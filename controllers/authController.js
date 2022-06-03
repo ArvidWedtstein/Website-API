@@ -74,14 +74,15 @@ exports.postSignin = async (req, res, next) => {
       throw error;
     }
     const peasantroleid = "61e54d738d85aacb59ce3338"
-    const hashedPassword = await bcrypt.hash(password, 12);
-    const user = new userModel({
+
+    // const hashedPassword = await bcrypt.hash(password, 12);
+    const newUser = new userModel({
       name: name,
       email: email,
       password: password || password.hash,
       role: peasantroleid
     });
-    const result = await user.save();
+    const result = await newUser.save();
     res.status(200).json({
       message: "User created",
       user: result,
