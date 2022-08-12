@@ -93,8 +93,8 @@ app.use('/uploads', express.static('uploads'));
 app.use('/favicon.ico', express.static('favicon.ico'));
 
 var allowlist = [
-  "http://localhost:3000",
-  "https://nuxtarvidw.netlify.app", 
+  "https://nuxtarvidw.netlify.app",
+  "http://localhost:3000", 
 ]
 var corsOptionsDelegate = function (req, callback) {
   var corsOptions;
